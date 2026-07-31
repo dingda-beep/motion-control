@@ -1,0 +1,210 @@
+# 第 11 章：SRBD 与凸 MPC——高层预测接触力，低层落实全身力矩
+
+SRBD 是 Single Rigid Body Dynamics，单刚体动力学：把整台机器人近似成一个刚体。Convex MPC 是 Convex Model Predictive Control，凸模型预测控制：用容易快速求解的凸优化问题预测未来接触力。
+
+![SRBD、凸 MPC、WBC 与真实机器人之间的分层关系](picture/srbd_mpc_wbc.svg)
+
+## 1. 为什么简化
+
+把完整人形动力学放进几十步预测窗口，变量多、非线性强，实时求解困难。SRBD 把机器人整体视作一个刚体：
+
+- 保留质心位置、速度；
+- 保留身体姿态、角速度；
+- 接触力作为输入；
+- 忽略腿和手臂相对身体运动造成的惯量变化。
+
+对腿质量相对躯干较小的四足，这个近似常常很好；对四肢质量更明显且全身动作丰富的人形，误差更大。
+
+## 2. 平移动力学
+
+```text
+m · c_ddot
+=
+m · g
++ Σ[i=1→n_c] f_i
+```
+
+- `m`：整机质量；
+- `c`：质心位置；
+- `c_ddot`：质心加速度；
+- `n_c`：当前接触点数量；
+- `f_i`：第 `i` 个接触力。
+
+## 3. 转动动力学
+
+```text
+I · ω_dot
++ ω × (I · ω)
+=
+Σ[i=1→n_c]
+(p_i-c) × f_i
+```
+
+- `I`：机体转动惯量矩阵；
+- `ω`：角速度；
+- `ω_dot`：角加速度；
+- `p_i`：接触点位置；
+- `ω×(Iω)`：陀螺耦合项。
+
+右侧表示每个接触力对质心产生的力矩。
+
+## 4. 如何变成凸问题
+
+原模型仍有姿态、角速度和接触位置的非线性。常见近似包括：
+
+- 小姿态角或在参考轨迹附近线性化；
+- 在一个预测周期内把某些旋转矩阵、接触位置视作已知；
+- 忽略或近似陀螺项；
+- 预先给定 contact schedule（接触时序）。
+
+于是得到：
+
+```text
+x[k+1]
+=
+A_k · x[k]
++B_k · u[k]
++d[k]
+```
+
+- `x[k]`：质心和姿态相关状态；
+- `u[k]=[f[1,k]ᵀ,…]ᵀ`：各脚接触力；
+- `d[k]`：重力等已知偏置；
+- `A_k,B_k`：当前参考附近的线性模型。
+
+## 5. MPC 目标
+
+```text
+总目标 =
+Σ[k=0→N-1] {
+    状态跟踪误差[k]ᵀ · Q · 状态跟踪误差[k]
+    + u[k]ᵀ · R · u[k]
+}
+```
+
+第一项追踪质心位置、速度和身体姿态；第二项避免接触力过大或分配剧烈。
+
+还可惩罚输入变化：
+
+```text
+‖u[k]-u[k-1]‖² weighted by R_Δ
+```
+
+使接触力更平滑。
+
+## 6. 接触约束
+
+支撑脚：
+
+```text
+λ_z≥0,
+|λ_x|≤μλ_z,
+|λ_y|≤μλ_z
+```
+
+摆动脚：
+
+```text
+f_i,k=0
+```
+
+若接触时序已知，这些都是线性约束，整个问题成为 QP（Quadratic Programming，二次规划），也就是“二次目标 + 线性约束”的优化问题。
+
+## 7. 为什么 MPC 输出不能直接驱动电机
+
+MPC 输出的是每只脚应该通过地面产生的力。电机需要的是关节力矩。两种转换：
+
+### 雅可比转置
+
+```text
+τ
+≈
+Σ_i (J_iᵀ · f_i)
+```
+
+快，但没有统一处理完整动力学和其他任务。
+
+### 低层 WBC
+
+WBC（Whole-Body Control，全身控制）负责把高层接触力和身体运动参考落实成关节力矩。
+
+把 MPC 的 `f_ref` 作为 WBC 任务：
+
+```text
+J_f=
+‖λ-λ_ref‖_W_f²
+```
+
+WBC 再结合全身动力学、摆动脚、姿态、限幅求关节力矩。这就是：
+
+```text
+Convex MPC（50–200 Hz）
+    ↓ 接触力与状态参考
+QP-WBC（500–1000 Hz）
+    ↓ 关节力矩
+Robot
+```
+
+## 8. 简化伪代码
+
+```go
+func mpcUpdate(
+	estimatedState EstimatedState,
+	reference MotionReference,
+	contactSchedule ContactSchedule,
+) ContactForce {
+	// 在当前状态估计附近建立线性的单刚体模型。
+	a, b, d := linearizedSRBD(estimatedState, contactSchedule)
+
+	// 把跟踪目标和摩擦限制组装成二次规划问题。
+	h, g := buildQuadraticCost(a, b, d, reference)
+	c, lower, upper := buildFrictionConstraints(contactSchedule)
+	forceSequence := solveQP(h, g, c, lower, upper)
+
+	// MPC 只执行最优序列中的第一步。
+	return forceSequence.First()
+}
+
+func controlTick(state EstimatedState, forceReference ContactForce) Vector {
+	// WBC 把高层接触力参考落实成当前时刻的关节力矩。
+	return solveWBCQP(WBCInput{
+		State:               state,
+		DesiredContactForce: forceReference,
+		DesiredSwingFoot:    currentSwingReference(),
+		DesiredTorso:        currentTorsoReference(),
+	})
+}
+```
+
+代码中的 `estimatedState` 是 `x_hat`，由它建立的未来 `x[k]` 是 SRBD 模型预测，不是真值。接触计划同样是一项关于未来的假设。高层求解可行，只表示简化模型中的质心与接触力轨迹可行；WBC、关节限位、执行器和真实地面仍可能否决它。
+
+## 9. 接触计划不是免费得到的
+
+Convex MPC 通常假设未来哪只脚接地已知。接触时序和落脚位置可能来自：
+
+- 固定步态生成器；
+- Raibert 落脚启发式；
+- 单独的足步规划器；
+- 更高层轨迹优化；
+- 学习策略。
+
+如果计划中的脚没按时落地，MPC 仍按错误接触模型预测，力分配会迅速失效。
+
+这也说明 MPC 的滚动重算为什么重要：实际落地事件和状态测量会修正上一周期的预测。但若估计器没有识别出接触失配，重算只会继续使用错误假设。
+
+## 10. 局限
+
+- 忽略四肢摆动的惯量变化；
+- 预设接触时序，难同时优化复杂接触；
+- 线性化只在参考附近准确；
+- 主要擅长 locomotion（移动），全身操作能力有限；
+- 高层和低层模型不一致会产生跟踪偏差。
+
+## 11. 练习
+
+1. 机器人静止时，所有支撑脚竖直力之和应约等于什么？
+2. 摆动脚在 MPC 中为什么要求接触力为零？
+3. 为什么高层 MPC 频率可以低于 WBC？
+4. 大幅挥动双臂时，SRBD 的哪个假设最可能失效？
+
+答案：1）`mg`；2）它没有接触地面，不能施加地面反力；3）高层预测变化较慢，WBC 高频处理全身跟踪与扰动；4）整体固定惯量和忽略连杆相对运动的假设。

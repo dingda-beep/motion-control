@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="470" viewBox="0 0 1300 470">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .block-title{font:700 22px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 18px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#475569}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#blueArrow)}
+      .return{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#greenArrow)}
+    </style>
+    <marker id="blueArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2563eb"/></marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1300" height="470" fill="#f8fafc"/>
+  <text x="650" y="50" text-anchor="middle" class="title">强化学习环境的一次循环：策略看到什么、做什么、凭什么改进</text>
+
+  <rect x="75" y="145" width="230" height="120" rx="18" fill="#eff6ff" stroke="#93c5fd" stroke-width="3"/>
+  <text x="190" y="188" text-anchor="middle" class="block-title">观测 o[t]</text>
+  <text x="190" y="222" text-anchor="middle" class="body">姿态、关节、速度命令</text>
+
+  <rect x="390" y="145" width="230" height="120" rx="18" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="3"/>
+  <text x="505" y="188" text-anchor="middle" class="block-title">策略网络</text>
+  <text x="505" y="222" text-anchor="middle" class="body">根据观测选择动作</text>
+
+  <rect x="705" y="145" width="230" height="120" rx="18" fill="#fff7ed" stroke="#fdba74" stroke-width="3"/>
+  <text x="820" y="188" text-anchor="middle" class="block-title">动作 a[t]</text>
+  <text x="820" y="222" text-anchor="middle" class="body">关节目标或关节力矩</text>
+
+  <rect x="1020" y="145" width="230" height="120" rx="18" fill="#f0fdf4" stroke="#86efac" stroke-width="3"/>
+  <text x="1135" y="188" text-anchor="middle" class="block-title">环境推进一步</text>
+  <text x="1135" y="222" text-anchor="middle" class="body">动力学、接触与传感器</text>
+
+  <path d="M305 205 L385 205" class="arrow"/>
+  <path d="M620 205 L700 205" class="arrow"/>
+  <path d="M935 205 L1015 205" class="arrow"/>
+
+  <path d="M1135 265 L1135 360 L190 360 L190 270" class="return"/>
+  <text x="665" y="335" text-anchor="middle" class="block-title">返回：下一观测 o[t+1]、奖励 r[t]、是否结束 done</text>
+  <text x="650" y="417" text-anchor="middle" class="body">奖励不是电机命令；它只是训练阶段评价这一步好坏的分数。部署时通常只保留“观测 → 策略 → 动作”。</text>
+</svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 22px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .sim{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .real{fill:#fff7ed;stroke:#fb923c;stroke-width:3}
+      .block{fill:#fff;stroke:#cbd5e1;stroke-width:2}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+      .diff{stroke:#ef4444;stroke-width:3;stroke-dasharray:8 6;fill:none;marker-end:url(#r)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="r" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#ef4444"/></marker>
+  </defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="46" text-anchor="middle" class="title">Sim2Real 检查的是整条闭环，不只是同一个策略网络</text>
+
+  <rect x="45" y="90" width="1110" height="205" rx="18" class="sim"/>
+  <text x="75" y="125" class="head">仿真闭环</text>
+  <rect x="180" y="145" width="170" height="80" rx="14" class="block"/>
+  <rect x="410" y="145" width="170" height="80" rx="14" class="block"/>
+  <rect x="640" y="145" width="170" height="80" rx="14" class="block"/>
+  <rect x="870" y="145" width="210" height="80" rx="14" class="block"/>
+  <text x="265" y="180" text-anchor="middle" class="body">仿真观测 o_sim</text>
+  <text x="495" y="180" text-anchor="middle" class="body">相同策略 π</text>
+  <text x="725" y="180" text-anchor="middle" class="body">动作接口</text>
+  <text x="975" y="180" text-anchor="middle" class="body">仿真动力学 f_sim</text>
+  <path d="M350 185H405M580 185H635M810 185H865" class="arrow"/>
+  <text x="600" y="260" text-anchor="middle" class="small">时间步固定、参数已知、接触近似、传感器可直接读取真值</text>
+
+  <rect x="45" y="350" width="1110" height="205" rx="18" class="real"/>
+  <text x="75" y="385" class="head">真机闭环</text>
+  <rect x="180" y="405" width="170" height="80" rx="14" class="block"/>
+  <rect x="410" y="405" width="170" height="80" rx="14" class="block"/>
+  <rect x="640" y="405" width="170" height="80" rx="14" class="block"/>
+  <rect x="870" y="405" width="210" height="80" rx="14" class="block"/>
+  <text x="265" y="440" text-anchor="middle" class="body">测量/估计 o_real</text>
+  <text x="495" y="440" text-anchor="middle" class="body">相同策略 π</text>
+  <text x="725" y="440" text-anchor="middle" class="body">驱动器与电机</text>
+  <text x="975" y="440" text-anchor="middle" class="body">真实世界 f_real</text>
+  <path d="M350 445H405M580 445H635M810 445H865" class="arrow"/>
+  <text x="600" y="520" text-anchor="middle" class="small">噪声、延迟、饱和、柔性、温度、摩擦变化和未建模扰动</text>
+
+  <path d="M265 230V395M725 230V395M975 230V395" class="diff"/>
+  <text x="285" y="330" class="body">观测差异</text>
+  <text x="745" y="330" class="body">执行差异</text>
+  <text x="995" y="330" class="body">响应差异</text>
+  <rect x="220" y="590" width="760" height="42" rx="12" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="600" y="618" text-anchor="middle" class="body">任意一处不一致都会改变反馈行为；真机成功才验证了完整因果链</text>
+</svg>

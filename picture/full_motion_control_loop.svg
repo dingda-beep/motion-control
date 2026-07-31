@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="650" viewBox="0 0 1500 650">
+  <defs>
+    <style>
+      .title{font:700 31px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .block-title{font:700 20px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#475569}
+      .tiny{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .block{fill:#fff;stroke:#94a3b8;stroke-width:2.5}
+      .real{fill:#fff7ed;stroke:#fb923c;stroke-width:3}
+      .estimate{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .control{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#blue)}
+      .feedback{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#green)}
+      .model{stroke:#7c3aed;stroke-width:3;stroke-dasharray:9 7;fill:none;marker-end:url(#purple)}
+    </style>
+    <marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2563eb"/></marker>
+    <marker id="green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#16a34a"/></marker>
+    <marker id="purple" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#7c3aed"/></marker>
+  </defs>
+
+  <rect width="1500" height="650" fill="#f8fafc"/>
+  <text x="750" y="48" text-anchor="middle" class="title">完整运动控制闭环：计算机做决定，真实世界产生结果</text>
+
+  <rect x="40" y="135" width="190" height="110" rx="16" class="block"/>
+  <text x="135" y="174" text-anchor="middle" class="block-title">人的目标</text>
+  <text x="135" y="207" text-anchor="middle" class="body">“走到门边”</text>
+
+  <rect x="285" y="135" width="205" height="110" rx="16" class="block"/>
+  <text x="387" y="174" text-anchor="middle" class="block-title">任务与参考</text>
+  <text x="387" y="207" text-anchor="middle" class="body">速度、落脚点、姿态</text>
+
+  <rect x="550" y="110" width="260" height="160" rx="16" class="control"/>
+  <text x="680" y="150" text-anchor="middle" class="block-title">控制器或策略</text>
+  <text x="680" y="183" text-anchor="middle" class="body">输入：参考 + 估计状态 x_hat</text>
+  <text x="680" y="215" text-anchor="middle" class="body">输出：控制输入 u</text>
+  <text x="680" y="246" text-anchor="middle" class="tiny">只能选择干预，不能直接指定结果</text>
+
+  <rect x="870" y="135" width="190" height="110" rx="16" class="block"/>
+  <text x="965" y="174" text-anchor="middle" class="block-title">电机与驱动器</text>
+  <text x="965" y="207" text-anchor="middle" class="body">执行控制输入 u</text>
+
+  <rect x="1120" y="105" width="330" height="170" rx="16" class="real"/>
+  <text x="1285" y="145" text-anchor="middle" class="block-title">真实机器人与环境 f_real</text>
+  <text x="1285" y="180" text-anchor="middle" class="body">刚体、接触、重力、扰动、延迟</text>
+  <text x="1285" y="215" text-anchor="middle" class="body">产生真正的下一状态 x_real</text>
+  <text x="1285" y="247" text-anchor="middle" class="tiny">这是最终裁判，不由软件直接赋值</text>
+
+  <path d="M230 190 L280 190" class="arrow"/>
+  <path d="M490 190 L545 190" class="arrow"/>
+  <path d="M810 190 L865 190" class="arrow"/>
+  <path d="M1060 190 L1115 190" class="arrow"/>
+
+  <rect x="1035" y="365" width="245" height="115" rx="16" class="block"/>
+  <text x="1158" y="405" text-anchor="middle" class="block-title">传感器测量 y</text>
+  <text x="1158" y="438" text-anchor="middle" class="body">有限、带噪声、带延迟</text>
+
+  <rect x="675" y="350" width="280" height="145" rx="16" class="estimate"/>
+  <text x="815" y="390" text-anchor="middle" class="block-title">状态估计器</text>
+  <text x="815" y="423" text-anchor="middle" class="body">测量 y + 估计模型</text>
+  <text x="815" y="456" text-anchor="middle" class="body">形成估计状态 x_hat</text>
+
+  <path d="M1285 275 L1285 320 L1158 320 L1158 360" class="feedback"/>
+  <path d="M1035 422 L960 422" class="feedback"/>
+  <path d="M675 422 L620 422 L620 300 L700 300 L700 275" class="feedback"/>
+
+  <rect x="175" y="365" width="365" height="130" rx="16" fill="#f5f3ff" stroke="#a78bfa" stroke-width="2.5"/>
+  <text x="357" y="405" text-anchor="middle" class="block-title">计算机中的预测模型 f_model</text>
+  <text x="357" y="438" text-anchor="middle" class="body">从 x_hat 和候选 u 预测未来</text>
+  <text x="357" y="469" text-anchor="middle" class="tiny">预测状态不是未来的真实状态</text>
+  <path d="M540 400 C570 345 510 230 545 230" class="model"/>
+
+  <rect x="175" y="545" width="1110" height="65" rx="16" fill="#ecfeff" stroke="#67e8f9" stroke-width="2"/>
+  <text x="730" y="572" text-anchor="middle" class="block-title">反馈的作用：暴露“预测与现实”的差异，让下一次决定使用新的证据</text>
+  <text x="730" y="598" text-anchor="middle" class="tiny">闭环设计的不是一条完美命令，而是机器人在不同状态和干扰下持续作出反应的规律</text>
+</svg>

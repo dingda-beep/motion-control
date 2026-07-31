@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 21px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .card{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+      .feedback{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#g)}
+      .link{stroke:#64748b;stroke-width:7;stroke-linecap:round}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="46" text-anchor="middle" class="title">动作重映射给出“想模仿什么”，模仿控制解决“怎样持续做到”</text>
+
+  <rect x="35" y="95" width="245" height="400" rx="18" class="card"/>
+  <text x="157" y="135" text-anchor="middle" class="head">人体动作数据</text>
+  <circle cx="157" cy="205" r="17" fill="#ef4444"/>
+  <line x1="157" y1="222" x2="157" y2="315" class="link"/>
+  <line x1="157" y1="250" x2="90" y2="285" class="link"/>
+  <line x1="157" y1="250" x2="225" y2="285" class="link"/>
+  <line x1="157" y1="315" x2="110" y2="400" class="link"/>
+  <line x1="157" y1="315" x2="205" y2="400" class="link"/>
+  <text x="157" y="445" text-anchor="middle" class="small">人体骨架、关键点、接触</text>
+  <text x="157" y="472" text-anchor="middle" class="small">不是机器人关节命令</text>
+
+  <path d="M280 295H340" class="arrow"/>
+  <rect x="345" y="95" width="245" height="400" rx="18" fill="#eff6ff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="467" y="135" text-anchor="middle" class="head">动作重映射</text>
+  <text x="375" y="185" class="body">匹配：</text>
+  <text x="395" y="220" class="small">• 关键点和末端位置</text>
+  <text x="395" y="252" class="small">• 身体朝向和高度</text>
+  <text x="395" y="284" class="small">• 关节限位与碰撞</text>
+  <text x="395" y="316" class="small">• 轨迹连续性</text>
+  <rect x="390" y="365" width="155" height="72" rx="12" fill="#fff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="467" y="395" text-anchor="middle" class="body">机器人参考轨迹</text>
+  <text x="467" y="422" text-anchor="middle" class="small">q_ref(t)</text>
+
+  <path d="M590 295H650" class="arrow"/>
+  <rect x="655" y="95" width="245" height="400" rx="18" fill="#f5f3ff" stroke="#a78bfa" stroke-width="3"/>
+  <text x="777" y="135" text-anchor="middle" class="head">模仿控制训练</text>
+  <text x="685" y="190" class="small">• 跟踪姿态与末端</text>
+  <text x="685" y="225" class="small">• 遵守接触和动力学</text>
+  <text x="685" y="260" class="small">• 学习扰动恢复</text>
+  <text x="685" y="295" class="small">• 惩罚冲击与能耗</text>
+  <rect x="700" y="365" width="155" height="72" rx="12" fill="#fff" stroke="#c4b5fd" stroke-width="2"/>
+  <text x="777" y="395" text-anchor="middle" class="body">反馈策略 π</text>
+  <text x="777" y="422" text-anchor="middle" class="small">观测 + 参考 → 动作</text>
+
+  <path d="M900 295H960" class="arrow"/>
+  <rect x="965" y="95" width="200" height="400" rx="18" fill="#fff7ed" stroke="#fb923c" stroke-width="3"/>
+  <text x="1065" y="135" text-anchor="middle" class="head">真实执行</text>
+  <text x="1065" y="200" text-anchor="middle" class="body">期望轨迹</text>
+  <text x="1065" y="235" text-anchor="middle" class="small">≠</text>
+  <text x="1065" y="270" text-anchor="middle" class="body">实际动作</text>
+  <text x="1065" y="335" text-anchor="middle" class="small">传感器测量误差</text>
+  <text x="1065" y="365" text-anchor="middle" class="small">策略逐周期纠正</text>
+  <text x="1065" y="430" text-anchor="middle" class="small">单帧像人不代表</text>
+  <text x="1065" y="457" text-anchor="middle" class="small">长期闭环稳定</text>
+
+  <path d="M1065 500V545H777V500" class="feedback"/>
+  <rect x="170" y="560" width="860" height="42" rx="12" fill="#ecfeff" stroke="#67e8f9" stroke-width="2"/>
+  <text x="600" y="588" text-anchor="middle" class="body">运动学重映射负责几何参考；动力学可行性与恢复能力必须由后续控制和真实反馈验证</text>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 21px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .card{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+      .motion{stroke:#ea580c;stroke-width:4;fill:none;marker-end:url(#o)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="o" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#ea580c"/></marker>
+  </defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="46" text-anchor="middle" class="title">质心动力学 NMPC：预测全身动量，再由 WBC 落实力矩</text>
+
+  <rect x="45" y="90" width="300" height="430" rx="18" class="card"/>
+  <text x="195" y="130" text-anchor="middle" class="head">质心量看见全身协调</text>
+  <line x1="95" y1="430" x2="295" y2="430" stroke="#475569" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="195" cy="205" r="16" fill="#2563eb"/>
+  <line x1="195" y1="221" x2="195" y2="320" stroke="#64748b" stroke-width="8" stroke-linecap="round"/>
+  <line x1="195" y1="250" x2="105" y2="185" stroke="#64748b" stroke-width="8" stroke-linecap="round"/>
+  <line x1="195" y1="250" x2="300" y2="155" stroke="#64748b" stroke-width="8" stroke-linecap="round"/>
+  <line x1="195" y1="320" x2="135" y2="430" stroke="#64748b" stroke-width="8" stroke-linecap="round"/>
+  <line x1="195" y1="320" x2="255" y2="430" stroke="#64748b" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="195" cy="285" r="13" fill="#ef4444"/>
+  <path d="M220 280C280 250 295 330 245 350" class="motion"/>
+  <text x="240" y="260" class="small">角动量 k</text>
+  <text x="195" y="470" text-anchor="middle" class="small">h_G = A_G(q)v</text>
+  <text x="195" y="495" text-anchor="middle" class="small">挥臂、弯腰会改变整体动量</text>
+
+  <path d="M345 305H410" class="arrow"/>
+  <rect x="415" y="90" width="330" height="430" rx="18" fill="#eff6ff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="580" y="130" text-anchor="middle" class="head">非线性 MPC（NMPC）</text>
+  <text x="455" y="180" class="body">状态：质心 c、动量 h_G、构型 q</text>
+  <text x="455" y="220" class="body">输入：接触力 λ、关节速度 q_dot</text>
+  <text x="455" y="270" class="body">同时预测：</text>
+  <text x="480" y="305" class="small">• 质心和身体运动</text>
+  <text x="480" y="338" class="small">• 线动量与角动量</text>
+  <text x="480" y="371" class="small">• 接触力与关节运动</text>
+  <rect x="480" y="420" width="200" height="62" rx="12" fill="#fff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="580" y="458" text-anchor="middle" class="body">未来参考轨迹</text>
+
+  <path d="M745 305H810" class="arrow"/>
+  <rect x="815" y="90" width="340" height="430" rx="18" class="card"/>
+  <text x="985" y="130" text-anchor="middle" class="head">WBC 与真实执行</text>
+  <rect x="875" y="175" width="220" height="90" rx="14" fill="#f5f3ff" stroke="#a78bfa" stroke-width="3"/>
+  <text x="985" y="210" text-anchor="middle" class="body">WBC 补全全身约束</text>
+  <text x="985" y="240" text-anchor="middle" class="small">求当前关节力矩 τ</text>
+  <path d="M985 270V320" class="arrow"/>
+  <rect x="875" y="325" width="220" height="90" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="3"/>
+  <text x="985" y="360" text-anchor="middle" class="body">电机 + 真实接触</text>
+  <text x="985" y="390" text-anchor="middle" class="small">产生实际全身运动</text>
+  <text x="985" y="465" text-anchor="middle" class="small">高层仍未直接处理所有驱动力矩细节</text>
+  <text x="985" y="492" text-anchor="middle" class="small">复杂模型也不自动带来鲁棒性</text>
+
+  <rect x="180" y="560" width="840" height="42" rx="12" fill="#ecfeff" stroke="#67e8f9" stroke-width="2"/>
+  <text x="600" y="588" text-anchor="middle" class="body">CD 不是 SRBD 的固定“下一等级”，而是为全身动量协调保留不同信息的另一种抽象</text>
+</svg>

@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1020" viewBox="0 0 1500 1020">
+  <defs>
+    <style>
+      .title { font: 700 34px "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172033; }
+      .subtitle { font: 400 20px "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #536176; }
+      .card-title { font: 700 25px "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172033; }
+      .body { font: 400 18px "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #334155; }
+      .small { font: 400 16px "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #475569; }
+      .label { font: 600 17px "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172033; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 18; }
+      .ground { stroke: #475569; stroke-width: 7; stroke-linecap: round; }
+      .link { stroke: #64748b; stroke-width: 7; stroke-linecap: round; fill: none; }
+      .mass { fill: #ef4444; stroke: #991b1b; stroke-width: 2; }
+      .joint { fill: #2563eb; stroke: #1e3a8a; stroke-width: 2; }
+      .force { stroke: #16a34a; stroke-width: 5; fill: none; marker-end: url(#arrow-green); }
+      .motion { stroke: #ea580c; stroke-width: 4; fill: none; marker-end: url(#arrow-orange); }
+      .muted { stroke: #94a3b8; stroke-width: 3; stroke-dasharray: 9 7; fill: none; }
+      .pill-blue { fill: #e0f2fe; stroke: #7dd3fc; stroke-width: 1.5; }
+      .pill-green { fill: #dcfce7; stroke: #86efac; stroke-width: 1.5; }
+      .pill-orange { fill: #ffedd5; stroke: #fdba74; stroke-width: 1.5; }
+    </style>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#ea580c"/>
+    </marker>
+  </defs>
+
+  <rect width="1500" height="1020" fill="#f8fafc"/>
+  <text x="750" y="55" text-anchor="middle" class="title">同一台人形机器人，可以采用五种不同的动力学抽象</text>
+  <text x="750" y="88" text-anchor="middle" class="subtitle">它们不是固定升级路线；应根据当前要回答的问题选择，也可以在同一系统的不同层同时使用</text>
+
+  <!-- LIP -->
+  <rect x="45" y="125" width="440" height="355" class="card"/>
+  <text x="70" y="163" class="card-title">LIP：线性倒立摆</text>
+  <text x="70" y="192" class="small">只研究固定高度下的质心水平运动</text>
+  <line x1="95" y1="370" x2="330" y2="370" class="ground"/>
+  <line x1="215" y1="370" x2="280" y2="242" class="link"/>
+  <circle cx="280" cy="242" r="24" class="mass"/>
+  <line x1="280" y1="242" x2="360" y2="242" class="motion"/>
+  <text x="305" y="228" class="label">质心</text>
+  <text x="330" y="264" class="small">水平运动</text>
+  <line x1="280" y1="242" x2="280" y2="370" class="muted"/>
+  <text x="70" y="412" class="body">保留：质心位置、速度、支撑点</text>
+  <text x="70" y="441" class="body">忽略：腿质量、质心升降、挥臂</text>
+  <rect x="319" y="392" width="136" height="48" rx="14" class="pill-blue"/>
+  <text x="387" y="423" text-anchor="middle" class="label">简化行走平衡</text>
+
+  <!-- SLIP -->
+  <rect x="530" y="125" width="440" height="355" class="card"/>
+  <text x="555" y="163" class="card-title">SLIP：弹簧负载倒立摆</text>
+  <text x="555" y="192" class="small">用可压缩的弹簧腿描述跑跳</text>
+  <line x1="580" y1="370" x2="815" y2="370" class="ground"/>
+  <path d="M700 370 l-15 -18 l30 -18 l-30 -18 l30 -18 l-30 -18 l30 -18 l-15 -18" stroke="#2563eb" stroke-width="6" fill="none"/>
+  <circle cx="700" cy="242" r="24" class="mass"/>
+  <path d="M750 275 C790 300,790 340,750 360" class="motion"/>
+  <text x="770" y="318" class="small">压缩 / 回弹</text>
+  <text x="555" y="412" class="body">保留：质心、腿长、弹性与触地相位</text>
+  <text x="555" y="441" class="body">忽略：每个真实关节和连杆惯量</text>
+  <rect x="804" y="392" width="136" height="48" rx="14" class="pill-orange"/>
+  <text x="872" y="423" text-anchor="middle" class="label">跑步与跳跃</text>
+
+  <!-- SRBD -->
+  <rect x="1015" y="125" width="440" height="355" class="card"/>
+  <text x="1040" y="163" class="card-title">SRBD：单刚体动力学</text>
+  <text x="1040" y="192" class="small">把全身质量与惯量集中成一个刚体</text>
+  <line x1="1065" y1="370" x2="1400" y2="370" class="ground"/>
+  <g transform="rotate(-8 1235 250)">
+    <rect x="1165" y="212" width="140" height="78" rx="8" fill="#fb923c" stroke="#c2410c" stroke-width="3"/>
+    <circle cx="1235" cy="251" r="12" class="mass"/>
+  </g>
+  <line x1="1190" y1="286" x2="1135" y2="370" class="muted"/>
+  <line x1="1280" y1="286" x2="1340" y2="370" class="muted"/>
+  <circle cx="1135" cy="370" r="8" class="joint"/>
+  <circle cx="1340" cy="370" r="8" class="joint"/>
+  <line x1="1135" y1="350" x2="1135" y2="295" class="force"/>
+  <line x1="1340" y1="350" x2="1340" y2="295" class="force"/>
+  <text x="1045" y="306" class="small">接触力从已知足端位置作用</text>
+  <text x="1040" y="412" class="body">保留：质心、姿态、整体惯量、接触力</text>
+  <text x="1040" y="441" class="body">忽略：四肢相对运动造成的惯量变化</text>
+  <rect x="1289" y="392" width="136" height="48" rx="14" class="pill-green"/>
+  <text x="1357" y="423" text-anchor="middle" class="label">快速力分配</text>
+
+  <!-- CD -->
+  <rect x="160" y="525" width="550" height="355" class="card"/>
+  <text x="185" y="563" class="card-title">CD：质心动力学</text>
+  <text x="185" y="592" class="small">保留各连杆对整体线动量和角动量的影响</text>
+  <line x1="210" y1="780" x2="475" y2="780" class="ground"/>
+  <circle cx="345" cy="642" r="17" class="joint"/>
+  <line x1="345" y1="659" x2="345" y2="710" class="link"/>
+  <line x1="345" y1="675" x2="285" y2="630" class="link"/>
+  <line x1="345" y1="675" x2="410" y2="620" class="link"/>
+  <line x1="345" y1="710" x2="295" y2="780" class="link"/>
+  <line x1="345" y1="710" x2="405" y2="780" class="link"/>
+  <circle cx="345" cy="695" r="13" class="mass"/>
+  <path d="M375 685 C420 650,430 720,392 735" class="motion"/>
+  <text x="430" y="684" class="small">整体角动量</text>
+  <text x="185" y="822" class="body">保留：质心、总动量、构型对动量的影响</text>
+  <text x="185" y="851" class="body">不直接回答：每个电机此刻输出多少力矩</text>
+  <rect x="520" y="802" width="160" height="48" rx="14" class="pill-orange"/>
+  <text x="600" y="833" text-anchor="middle" class="label">挥臂与全身协调</text>
+
+  <!-- WBD -->
+  <rect x="755" y="525" width="550" height="355" class="card"/>
+  <text x="780" y="563" class="card-title">WBD：全身动力学</text>
+  <text x="780" y="592" class="small">显式保留浮动基、全部关节、执行器和接触</text>
+  <line x1="805" y1="780" x2="1070" y2="780" class="ground"/>
+  <circle cx="935" cy="630" r="16" class="joint"/>
+  <line x1="935" y1="646" x2="935" y2="705" class="link"/>
+  <line x1="935" y1="663" x2="875" y2="620" class="link"/>
+  <line x1="935" y1="663" x2="1000" y2="620" class="link"/>
+  <line x1="935" y1="705" x2="885" y2="742" class="link"/>
+  <line x1="885" y1="742" x2="875" y2="780" class="link"/>
+  <line x1="935" y1="705" x2="995" y2="742" class="link"/>
+  <line x1="995" y1="742" x2="1005" y2="780" class="link"/>
+  <circle cx="935" cy="663" r="8" class="joint"/>
+  <circle cx="935" cy="705" r="8" class="joint"/>
+  <circle cx="885" cy="742" r="8" class="joint"/>
+  <circle cx="995" cy="742" r="8" class="joint"/>
+  <line x1="875" y1="770" x2="875" y2="720" class="force"/>
+  <line x1="1005" y1="770" x2="1005" y2="720" class="force"/>
+  <text x="1040" y="684" class="small">每个关节力矩 τ</text>
+  <text x="780" y="822" class="body">保留：完整多刚体耦合、关节力矩与接触</text>
+  <text x="780" y="851" class="body">代价：变量多、参数多、实时计算更困难</text>
+  <rect x="1115" y="802" width="160" height="48" rx="14" class="pill-blue"/>
+  <text x="1195" y="833" text-anchor="middle" class="label">全身力矩控制</text>
+
+  <rect x="160" y="915" width="1145" height="72" rx="18" fill="#eef2ff" stroke="#a5b4fc" stroke-width="2"/>
+  <text x="732" y="946" text-anchor="middle" class="label">选择原则：只保留回答当前问题所必需的物理信息</text>
+  <text x="732" y="974" text-anchor="middle" class="body">简化行走平衡选 LIP｜跑跳弹性选 SLIP｜快速预测接触力选 SRBD｜全身动量协调选 CD｜落实关节力矩选 WBD</text>
+</svg>

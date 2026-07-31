@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 22px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .block{fill:#fff;stroke:#cbd5e1;stroke-width:2}
+      .train{fill:#f5f3ff;stroke:#a78bfa;stroke-width:3}
+      .deploy{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+      .update{stroke:#7c3aed;stroke-width:4;fill:none;marker-end:url(#p)}
+      .feedback{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#g)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="p" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#7c3aed"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="600" y="46" text-anchor="middle" class="title">强化学习：离线寻找策略参数，在线仍然依靠真实反馈</text>
+
+  <rect x="55" y="85" width="1090" height="245" rx="18" class="train"/>
+  <text x="85" y="122" class="head">训练阶段：大量仿真交互更新参数 θ</text>
+  <rect x="135" y="160" width="175" height="75" rx="14" class="block"/>
+  <rect x="385" y="160" width="175" height="75" rx="14" class="block"/>
+  <rect x="635" y="160" width="175" height="75" rx="14" class="block"/>
+  <rect x="885" y="160" width="175" height="75" rx="14" class="block"/>
+  <text x="222" y="192" text-anchor="middle" class="body">仿真观测 o</text>
+  <text x="472" y="192" text-anchor="middle" class="body">策略 π_θ 输出 a</text>
+  <text x="722" y="192" text-anchor="middle" class="body">环境 f_sim 推进</text>
+  <text x="972" y="192" text-anchor="middle" class="body">奖励/回报评价</text>
+  <path d="M310 198H380M560 198H630M810 198H880" class="arrow"/>
+  <path d="M972 240C972 295 472 295 472 240" class="update"/>
+  <text x="720" y="286" text-anchor="middle" class="small">优化器根据许多轨迹修改网络参数；奖励只表达训练偏好</text>
+
+  <path d="M600 330V375" class="update"/>
+  <text x="620" y="360" class="small">导出固定参数</text>
+
+  <rect x="55" y="385" width="1090" height="225" rx="18" class="deploy"/>
+  <text x="85" y="422" class="head">部署阶段：参数固定，但动作仍逐周期重算</text>
+  <rect x="135" y="460" width="190" height="75" rx="14" class="block"/>
+  <rect x="400" y="460" width="190" height="75" rx="14" class="block"/>
+  <rect x="665" y="460" width="190" height="75" rx="14" class="block"/>
+  <rect x="930" y="460" width="150" height="75" rx="14" class="block"/>
+  <text x="230" y="492" text-anchor="middle" class="body">真实测量/估计 o</text>
+  <text x="495" y="492" text-anchor="middle" class="body">策略 π_θ 输出命令</text>
+  <text x="760" y="492" text-anchor="middle" class="body">电机 + f_real</text>
+  <text x="1005" y="492" text-anchor="middle" class="body">新测量</text>
+  <path d="M325 498H395M590 498H660M855 498H925" class="arrow"/>
+  <path d="M1005 540V575H230V540" class="feedback"/>
+  <text x="617" y="594" text-anchor="middle" class="small">部署时通常没有奖励和参数更新；闭环纠错来自下一周期的新观测</text>
+
+  <text x="600" y="640" text-anchor="middle" class="body">RL 改变了控制律的获得方式，没有取消传感器、执行器、接触和物理约束</text>
+</svg>

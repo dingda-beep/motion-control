@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 22px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .block{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .input{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .qp{fill:#f5f3ff;stroke:#a78bfa;stroke-width:3}
+      .output{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+  </defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="46" text-anchor="middle" class="title">WBC：把多个任务和物理边界放进同一个当前时刻优化问题</text>
+
+  <rect x="45" y="95" width="260" height="430" rx="18" class="input"/>
+  <text x="175" y="135" text-anchor="middle" class="head">输入：当前证据与参考</text>
+  <text x="75" y="185" class="body">• 状态估计 x_hat</text>
+  <text x="75" y="225" class="body">• 接触模式估计</text>
+  <text x="75" y="265" class="body">• 质心/躯干参考</text>
+  <text x="75" y="305" class="body">• 摆动脚/手参考</text>
+  <text x="75" y="345" class="body">• 上游接触力参考</text>
+  <rect x="80" y="400" width="190" height="72" rx="12" fill="#fff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="175" y="430" text-anchor="middle" class="small">M、h、J 由当前</text>
+  <text x="175" y="455" text-anchor="middle" class="small">状态估计计算</text>
+
+  <path d="M305 310H375" class="arrow"/>
+  <rect x="380" y="80" width="440" height="470" rx="18" class="qp"/>
+  <text x="600" y="120" text-anchor="middle" class="head">QP：二次规划求当前候选解</text>
+  <rect x="425" y="155" width="350" height="90" rx="14" class="block"/>
+  <text x="600" y="187" text-anchor="middle" class="body">决策变量 z = [v_dot, τ, λ]</text>
+  <text x="600" y="220" text-anchor="middle" class="small">广义加速度、关节力矩、接触力</text>
+  <rect x="425" y="275" width="165" height="205" rx="14" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="507" y="310" text-anchor="middle" class="head">任务代价</text>
+  <text x="447" y="350" class="small">• 质心跟踪</text>
+  <text x="447" y="382" class="small">• 躯干直立</text>
+  <text x="447" y="414" class="small">• 手脚跟踪</text>
+  <text x="447" y="446" class="small">• 力矩平滑</text>
+  <rect x="610" y="275" width="165" height="205" rx="14" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/>
+  <text x="692" y="310" text-anchor="middle" class="head">硬约束</text>
+  <text x="630" y="350" class="small">• 全身动力学</text>
+  <text x="630" y="382" class="small">• 支撑脚固定</text>
+  <text x="630" y="414" class="small">• 摩擦和法向力</text>
+  <text x="630" y="446" class="small">• 关节/力矩限位</text>
+
+  <path d="M820 310H890" class="arrow"/>
+  <rect x="895" y="95" width="260" height="430" rx="18" class="output"/>
+  <text x="1025" y="135" text-anchor="middle" class="head">输出与现实验证</text>
+  <text x="1025" y="195" text-anchor="middle" class="body">真正下发：关节命令 τ</text>
+  <text x="1025" y="235" text-anchor="middle" class="small">v_dot、λ 常是内部候选量</text>
+  <rect x="940" y="285" width="170" height="88" rx="14" class="block"/>
+  <text x="1025" y="320" text-anchor="middle" class="body">电机 + 接触</text>
+  <text x="1025" y="350" text-anchor="middle" class="small">产生真实运动</text>
+  <text x="1025" y="420" text-anchor="middle" class="small">下一周期比较：</text>
+  <text x="1025" y="450" text-anchor="middle" class="small">预测力/加速度 vs 测量</text>
+
+  <rect x="180" y="585" width="840" height="45" rx="13" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="600" y="614" text-anchor="middle" class="body">QP 可行只证明当前模型中的数学问题有解，不保证真实脚不滑或驱动器精确实现力矩</text>
+</svg>

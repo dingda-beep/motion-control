@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="430" viewBox="0 0 1300 430">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .block{fill:#fff;stroke:#64748b;stroke-width:2.5}
+      .block-title{font:700 21px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .small{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#475569}
+      .wire{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#arrow)}
+      .feedback{stroke:#ea580c;stroke-width:4;fill:none;marker-end:url(#arrow2)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2563eb"/></marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#ea580c"/></marker>
+  </defs>
+  <rect width="1300" height="430" fill="#f8fafc"/>
+  <text x="650" y="48" text-anchor="middle" class="title">反馈控制：命令不是发完就结束，而是不断看结果并纠偏</text>
+
+  <rect x="55" y="145" width="185" height="105" rx="16" class="block"/>
+  <text x="147" y="184" text-anchor="middle" class="block-title">参考目标 r</text>
+  <text x="147" y="218" text-anchor="middle" class="small">例如膝关节 1 rad</text>
+
+  <circle cx="330" cy="198" r="32" fill="#fff7ed" stroke="#ea580c" stroke-width="3"/>
+  <text x="330" y="207" text-anchor="middle" class="block-title">Σ</text>
+  <text x="330" y="150" text-anchor="middle" class="small">误差 e = r - y</text>
+
+  <rect x="420" y="145" width="205" height="105" rx="16" class="block"/>
+  <text x="522" y="184" text-anchor="middle" class="block-title">控制器</text>
+  <text x="522" y="218" text-anchor="middle" class="small">根据误差计算动作 u</text>
+
+  <rect x="705" y="145" width="205" height="105" rx="16" class="block"/>
+  <text x="807" y="184" text-anchor="middle" class="block-title">机器人 + 环境</text>
+  <text x="807" y="218" text-anchor="middle" class="small">电机、身体、地面接触</text>
+
+  <rect x="995" y="145" width="205" height="105" rx="16" class="block"/>
+  <text x="1097" y="184" text-anchor="middle" class="block-title">传感器输出 y</text>
+  <text x="1097" y="218" text-anchor="middle" class="small">实际位置、速度、姿态</text>
+
+  <path d="M240 198 L293 198" class="wire"/>
+  <path d="M362 198 L415 198" class="wire"/>
+  <path d="M625 198 L700 198" class="wire"/>
+  <path d="M910 198 L990 198" class="wire"/>
+
+  <path d="M1097 250 L1097 340 L330 340 L330 235" class="feedback"/>
+  <text x="690" y="372" text-anchor="middle" class="small">橙色反馈路径：模型误差、负载变化和地面扰动出现后，下一周期继续修正</text>
+</svg>

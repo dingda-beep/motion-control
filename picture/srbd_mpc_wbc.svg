@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 21px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .card{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+      .feedback{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#g)}
+      .force{stroke:#16a34a;stroke-width:5;fill:none;marker-end:url(#g)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="46" text-anchor="middle" class="title">SRBD + Convex MPC + WBC：高层看未来，低层落实到关节</text>
+
+  <rect x="40" y="100" width="260" height="400" rx="18" class="card"/>
+  <text x="170" y="140" text-anchor="middle" class="head">SRBD 简化模型</text>
+  <line x1="80" y1="390" x2="260" y2="390" stroke="#475569" stroke-width="7" stroke-linecap="round"/>
+  <rect x="115" y="220" width="110" height="75" rx="8" fill="#fb923c" stroke="#c2410c" stroke-width="3" transform="rotate(-7 170 257)"/>
+  <circle cx="170" cy="257" r="10" fill="#ef4444"/>
+  <line x1="125" y1="295" x2="105" y2="390" stroke="#94a3b8" stroke-width="4" stroke-dasharray="7 5"/>
+  <line x1="215" y1="295" x2="235" y2="390" stroke="#94a3b8" stroke-width="4" stroke-dasharray="7 5"/>
+  <path d="M105 380V320M235 380V320" class="force"/>
+  <text x="170" y="435" text-anchor="middle" class="small">保留质心、姿态、整体惯量</text>
+  <text x="170" y="462" text-anchor="middle" class="small">忽略四肢相对惯量变化</text>
+
+  <path d="M300 300H365" class="arrow"/>
+  <rect x="370" y="100" width="280" height="400" rx="18" fill="#eff6ff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="510" y="140" text-anchor="middle" class="head">Convex MPC</text>
+  <text x="510" y="185" text-anchor="middle" class="body">输入：x_hat + 接触计划</text>
+  <text x="510" y="220" text-anchor="middle" class="body">预测未来多步质心和姿态</text>
+  <text x="510" y="255" text-anchor="middle" class="body">求各脚接触力序列</text>
+  <rect x="420" y="305" width="180" height="105" rx="14" fill="#fff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="510" y="340" text-anchor="middle" class="small">只执行第一步</text>
+  <text x="510" y="370" text-anchor="middle" class="small">下一周期重新预测</text>
+  <text x="510" y="450" text-anchor="middle" class="small">输出：λ_ref、状态参考</text>
+
+  <path d="M650 300H715" class="arrow"/>
+  <rect x="720" y="100" width="210" height="400" rx="18" fill="#f5f3ff" stroke="#a78bfa" stroke-width="3"/>
+  <text x="825" y="140" text-anchor="middle" class="head">高频 WBC</text>
+  <text x="825" y="195" text-anchor="middle" class="body">全身动力学</text>
+  <text x="825" y="230" text-anchor="middle" class="body">摆动脚与姿态任务</text>
+  <text x="825" y="265" text-anchor="middle" class="body">摩擦/力矩/关节约束</text>
+  <rect x="765" y="330" width="120" height="75" rx="12" fill="#fff" stroke="#c4b5fd" stroke-width="2"/>
+  <text x="825" y="375" text-anchor="middle" class="body">关节力矩 τ</text>
+
+  <path d="M930 300H985" class="arrow"/>
+  <rect x="990" y="100" width="170" height="400" rx="18" fill="#fff7ed" stroke="#fb923c" stroke-width="3"/>
+  <text x="1075" y="140" text-anchor="middle" class="head">真实机器人</text>
+  <text x="1075" y="205" text-anchor="middle" class="small">电机、接触</text>
+  <text x="1075" y="235" text-anchor="middle" class="small">重力、扰动</text>
+  <text x="1075" y="320" text-anchor="middle" class="body">产生 x_real</text>
+  <text x="1075" y="390" text-anchor="middle" class="small">传感器反馈</text>
+
+  <path d="M1075 500V545H510V505" class="feedback"/>
+  <rect x="170" y="560" width="860" height="42" rx="12" fill="#ecfeff" stroke="#67e8f9" stroke-width="2"/>
+  <text x="600" y="588" text-anchor="middle" class="body">高层“可行”只针对简化模型；WBC、执行器和真实地面会继续检验并修正</text>
+</svg>

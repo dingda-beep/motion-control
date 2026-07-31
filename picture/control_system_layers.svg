@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 21px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .block{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .high{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .low{fill:#f5f3ff;stroke:#a78bfa;stroke-width:3}
+      .real{fill:#fff7ed;stroke:#fb923c;stroke-width:3}
+      .estimate{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+      .feedback{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#g)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="46" text-anchor="middle" class="title">人形控制分层：越高看得越远，越低反应越快</text>
+
+  <rect x="45" y="90" width="210" height="125" rx="16" class="high"/>
+  <text x="150" y="128" text-anchor="middle" class="head">导航 Navigation</text>
+  <text x="150" y="165" text-anchor="middle" class="body">目的地、路径</text>
+  <text x="150" y="192" text-anchor="middle" class="small">约 1–10 Hz</text>
+  <path d="M255 152H310" class="arrow"/>
+
+  <rect x="315" y="90" width="210" height="125" rx="16" class="high"/>
+  <text x="420" y="128" text-anchor="middle" class="head">运动规划 Planning</text>
+  <text x="420" y="165" text-anchor="middle" class="body">落脚点、参考轨迹</text>
+  <text x="420" y="192" text-anchor="middle" class="small">约 20–100 Hz</text>
+  <path d="M525 152H580" class="arrow"/>
+
+  <rect x="585" y="90" width="210" height="125" rx="16" class="low"/>
+  <text x="690" y="128" text-anchor="middle" class="head">MPC / WBC</text>
+  <text x="690" y="165" text-anchor="middle" class="body">接触力、全身任务</text>
+  <text x="690" y="192" text-anchor="middle" class="small">约 50–1000 Hz</text>
+  <path d="M795 152H850" class="arrow"/>
+
+  <rect x="855" y="90" width="210" height="125" rx="16" class="low"/>
+  <text x="960" y="128" text-anchor="middle" class="head">驱动器 Driver</text>
+  <text x="960" y="165" text-anchor="middle" class="body">电流、位置、力矩环</text>
+  <text x="960" y="192" text-anchor="middle" class="small">数 kHz</text>
+
+  <path d="M960 215V275" class="arrow"/>
+  <rect x="800" y="280" width="320" height="150" rx="18" class="real"/>
+  <text x="960" y="320" text-anchor="middle" class="head">真实机器人与环境</text>
+  <text x="960" y="358" text-anchor="middle" class="body">电机、刚体、接触、重力</text>
+  <text x="960" y="390" text-anchor="middle" class="small">命令在这里变成真实结果 x_real</text>
+
+  <rect x="425" y="305" width="270" height="125" rx="18" class="estimate"/>
+  <text x="560" y="345" text-anchor="middle" class="head">状态估计 Estimator</text>
+  <text x="560" y="382" text-anchor="middle" class="body">测量 y → 状态估计 x_hat</text>
+  <text x="560" y="409" text-anchor="middle" class="small">融合 IMU、编码器、足底力、视觉</text>
+  <path d="M800 355H700" class="feedback"/>
+  <path d="M560 300V245H690V220" class="feedback"/>
+  <path d="M560 300V245H420V220" class="feedback"/>
+
+  <rect x="80" y="300" width="260" height="130" rx="16" class="block"/>
+  <text x="210" y="340" text-anchor="middle" class="head">状态机与安全层</text>
+  <text x="210" y="378" text-anchor="middle" class="body">校准、限幅、超时、降级</text>
+  <text x="210" y="407" text-anchor="middle" class="small">横跨各层，不由单个算法替代</text>
+  <path d="M340 365H420" class="arrow"/>
+
+  <rect x="120" y="490" width="960" height="115" rx="18" fill="#ecfeff" stroke="#67e8f9" stroke-width="2"/>
+  <text x="600" y="527" text-anchor="middle" class="head">责任边界</text>
+  <text x="600" y="560" text-anchor="middle" class="body">导航决定走哪条路，但不能决定关节力矩；规划给出落脚参考，但不能保证脚准时接地</text>
+  <text x="600" y="590" text-anchor="middle" class="body">控制器选择当前命令，但不能直接赋值 x_real；估计器形成信念，但不能改变现实</text>
+</svg>

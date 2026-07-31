@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 20px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .label{font:600 19px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .xaxis{stroke:#dc2626;stroke-width:6}
+      .yaxis{stroke:#16a34a;stroke-width:6}
+      .guide{stroke:#94a3b8;stroke-width:3;stroke-dasharray:8 7}
+    </style>
+    <marker id="redArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#dc2626"/></marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1200" height="560" fill="#f8fafc"/>
+  <text x="600" y="48" text-anchor="middle" class="title">同一个障碍物，在不同坐标系中会得到不同数字</text>
+
+  <rect x="55" y="85" width="510" height="400" rx="18" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="310" y="125" text-anchor="middle" class="label">世界坐标系 W：固定在地图上</text>
+  <line x1="150" y1="410" x2="470" y2="410" class="xaxis" marker-end="url(#redArrow)"/>
+  <line x1="150" y1="410" x2="150" y2="155" class="yaxis" marker-end="url(#greenArrow)"/>
+  <text x="475" y="433" class="label">x_W</text>
+  <text x="115" y="160" class="label">y_W</text>
+
+  <g transform="translate(285 330) rotate(-90)">
+    <rect x="-35" y="-22" width="70" height="44" rx="10" fill="#60a5fa" stroke="#1d4ed8" stroke-width="3"/>
+    <path d="M35,-13 L58,0 L35,13 Z" fill="#1d4ed8"/>
+    <line x1="0" y1="0" x2="125" y2="0" class="xaxis" marker-end="url(#redArrow)"/>
+    <line x1="0" y1="0" x2="0" y2="-115" class="yaxis" marker-end="url(#greenArrow)"/>
+  </g>
+  <text x="270" y="355" class="label">机器人</text>
+  <text x="278" y="185" class="label">x_B：机器人前方</text>
+  <text x="390" y="305" class="label">y_B</text>
+
+  <circle cx="285" cy="150" r="19" fill="#f59e0b" stroke="#b45309" stroke-width="3"/>
+  <text x="315" y="155" class="label">障碍物</text>
+  <line x1="285" y1="330" x2="285" y2="150" class="guide"/>
+
+  <rect x="615" y="85" width="530" height="400" rx="18" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="880" y="125" text-anchor="middle" class="label">两个数字都正确，区别在“用谁的轴表达”</text>
+  <rect x="675" y="165" width="410" height="90" rx="15" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="700" y="202" class="body">身体坐标系：p_B = [1, 0]ᵀ</text>
+  <text x="700" y="235" class="body">含义：障碍物在机器人正前方 1 m</text>
+  <rect x="675" y="285" width="410" height="90" rx="15" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+  <text x="700" y="322" class="body">世界坐标系：p_W = [0, 1]ᵀ</text>
+  <text x="700" y="355" class="body">含义：障碍物位于地图 y 轴正方向 1 m</text>
+  <text x="880" y="423" text-anchor="middle" class="label">旋转矩阵负责换坐标：p_W = R_WB · p_B</text>
+  <text x="880" y="455" text-anchor="middle" class="body">坐标变了，真实物体并没有移动</text>
+</svg>

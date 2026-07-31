@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 22px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 18px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 16px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .panel{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .ground{stroke:#475569;stroke-width:7;stroke-linecap:round}
+      .leg{stroke:#64748b;stroke-width:7;stroke-linecap:round}
+      .force{stroke:#16a34a;stroke-width:5;fill:none;marker-end:url(#g)}
+      .motion{stroke:#ea580c;stroke-width:4;fill:none;marker-end:url(#o)}
+    </style>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+    <marker id="o" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#ea580c"/></marker>
+  </defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="46" text-anchor="middle" class="title">LIP 与 ZMP：用脚底可提供的合力位置约束质心运动</text>
+
+  <rect x="50" y="90" width="500" height="430" rx="18" class="panel"/>
+  <text x="300" y="130" text-anchor="middle" class="head">侧视：固定质心高度的倒立摆</text>
+  <line x1="105" y1="415" x2="495" y2="415" class="ground"/>
+  <line x1="270" y1="415" x2="355" y2="210" class="leg"/>
+  <circle cx="355" cy="210" r="26" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+  <line x1="355" y1="210" x2="445" y2="210" class="motion"/>
+  <line x1="355" y1="210" x2="355" y2="415" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 6"/>
+  <circle cx="270" cy="415" r="11" fill="#16a34a"/>
+  <path d="M270 395V300" class="force"/>
+  <text x="375" y="196" class="body">质心 c</text>
+  <text x="290" y="292" class="body">地面合力</text>
+  <text x="270" y="455" text-anchor="middle" class="body">ZMP / CoP 位置 p</text>
+  <text x="300" y="488" text-anchor="middle" class="small">通过移动合力作用点，改变质心水平加速度</text>
+
+  <rect x="650" y="90" width="500" height="430" rx="18" class="panel"/>
+  <text x="900" y="130" text-anchor="middle" class="head">俯视：ZMP 必须位于当前支撑域内</text>
+  <rect x="745" y="205" width="95" height="210" rx="28" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <rect x="960" y="205" width="95" height="210" rx="28" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <polygon points="745,205 1055,205 1055,415 745,415" fill="#dcfce7" fill-opacity=".65" stroke="#16a34a" stroke-width="4" stroke-dasharray="9 6"/>
+  <circle cx="900" cy="310" r="13" fill="#ef4444"/>
+  <circle cx="815" cy="330" r="11" fill="#16a34a"/>
+  <text x="922" y="302" class="body">质心投影</text>
+  <text x="835" y="355" class="body">ZMP</text>
+  <text x="900" y="455" text-anchor="middle" class="body">绿色区域：双脚支撑多边形</text>
+  <text x="900" y="488" text-anchor="middle" class="small">单脚支撑时区域缩小；腾空时不再适用</text>
+
+  <rect x="150" y="555" width="900" height="45" rx="13" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/>
+  <text x="600" y="584" text-anchor="middle" class="body">ZMP 在支撑域内只是简化模型下的可行条件，不保证关节力矩、摩擦和真机扰动都满足</text>
+</svg>
