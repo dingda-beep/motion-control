@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 20px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 16px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 14px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .block{fill:#fff;stroke:#cbd5e1;stroke-width:2}
+      .sensor{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .estimate{fill:#f5f3ff;stroke:#a78bfa;stroke-width:3}
+      .control{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+      .feedback{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#g)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1200" height="560" fill="#f8fafc"/>
+  <text x="600" y="48" text-anchor="middle" class="title">感知行走：两类证据先融合成估计，再由策略产生动作</text>
+
+  <rect x="65" y="95" width="220" height="95" rx="16" class="sensor"/>
+  <text x="175" y="130" text-anchor="middle" class="head">本体感知历史</text>
+  <text x="175" y="158" text-anchor="middle" class="body">关节、IMU、上一动作</text>
+  <rect x="65" y="255" width="220" height="95" rx="16" class="sensor"/>
+  <text x="175" y="290" text-anchor="middle" class="head">外部感知</text>
+  <text x="175" y="318" text-anchor="middle" class="body">深度图 / 局部地图</text>
+
+  <rect x="390" y="145" width="260" height="160" rx="18" class="estimate"/>
+  <text x="520" y="185" text-anchor="middle" class="head">编码与时序融合</text>
+  <text x="520" y="218" text-anchor="middle" class="body">隐式表示 z</text>
+  <text x="520" y="248" text-anchor="middle" class="body">速度 / 地形显式估计</text>
+  <text x="520" y="278" text-anchor="middle" class="small">这些是内部估计，不是真值</text>
+  <path d="M285 142H335V190H385M285 302H335V260H385" class="arrow"/>
+
+  <rect x="750" y="145" width="180" height="160" rx="18" class="control"/>
+  <text x="840" y="194" text-anchor="middle" class="head">Actor</text>
+  <text x="840" y="228" text-anchor="middle" class="body">结合运动命令</text>
+  <text x="840" y="258" text-anchor="middle" class="body">输出当前动作</text>
+  <path d="M650 225H745" class="arrow"/>
+
+  <rect x="995" y="145" width="150" height="160" rx="18" class="control"/>
+  <text x="1070" y="194" text-anchor="middle" class="head">机器人</text>
+  <text x="1070" y="228" text-anchor="middle" class="body">电机</text>
+  <text x="1070" y="258" text-anchor="middle" class="body">接触与地形</text>
+  <path d="M930 225H990" class="arrow"/>
+
+  <path d="M1070 310V420H175V355" class="feedback"/>
+  <text x="620" y="449" text-anchor="middle" class="body">真实执行产生新测量；落脚是否成功必须由下一周期反馈验证</text>
+  <rect x="295" y="480" width="610" height="44" rx="12" class="block"/>
+  <text x="600" y="508" text-anchor="middle" class="small">训练时 Critic 和辅助损失可使用仿真特权信息；部署时只能保留真机可获得的输入</text>
+</svg>

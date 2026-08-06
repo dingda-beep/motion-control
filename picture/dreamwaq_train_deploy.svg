@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 21px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .block{fill:#fff;stroke:#cbd5e1;stroke-width:2}
+      .deploy{fill:#fff7ed;stroke:#fb923c;stroke-width:3}
+      .train{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .arrow{stroke:#ea580c;stroke-width:4;fill:none;marker-end:url(#a)}
+      .supervise{stroke:#2563eb;stroke-width:3;stroke-dasharray:9 7;fill:none;marker-end:url(#b)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#ea580c"/></marker>
+    <marker id="b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+  </defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="48" text-anchor="middle" class="title">DreamWaQ：部署只依赖传感器历史，仿真真值只帮助训练</text>
+
+  <rect x="55" y="82" width="1090" height="260" rx="18" class="deploy"/>
+  <text x="82" y="119" class="head">部署时保留的橙色闭环</text>
+  <rect x="95" y="158" width="190" height="76" rx="13" class="block"/>
+  <rect x="345" y="158" width="190" height="76" rx="13" class="block"/>
+  <rect x="595" y="158" width="190" height="76" rx="13" class="block"/>
+  <rect x="845" y="158" width="190" height="76" rx="13" class="block"/>
+  <text x="190" y="188" text-anchor="middle" class="body">关节 + IMU 历史</text>
+  <text x="190" y="213" text-anchor="middle" class="small">真机可测 o[t-H:t]</text>
+  <text x="440" y="188" text-anchor="middle" class="body">历史编码器 E</text>
+  <text x="440" y="213" text-anchor="middle" class="small">推断隐变量 z</text>
+  <text x="690" y="188" text-anchor="middle" class="body">Actor 策略</text>
+  <text x="690" y="213" text-anchor="middle" class="small">输出关节目标 a</text>
+  <text x="940" y="188" text-anchor="middle" class="body">PD + 真实机器人</text>
+  <text x="940" y="213" text-anchor="middle" class="small">产生下一帧测量</text>
+  <path d="M285 196H340M535 196H590M785 196H840" class="arrow"/>
+  <path d="M940 236V292H190V238" class="arrow"/>
+  <text x="565" y="316" text-anchor="middle" class="small">每个控制周期重新读取历史并纠偏</text>
+
+  <rect x="55" y="372" width="1090" height="185" rx="18" class="train"/>
+  <text x="82" y="409" class="head">训练时额外可用的蓝色监督（部署删除）</text>
+  <rect x="130" y="445" width="220" height="72" rx="13" class="block"/>
+  <rect x="490" y="445" width="220" height="72" rx="13" class="block"/>
+  <rect x="850" y="445" width="220" height="72" rx="13" class="block"/>
+  <text x="240" y="476" text-anchor="middle" class="body">仿真真值速度/地形</text>
+  <text x="240" y="501" text-anchor="middle" class="small">监督编码器学会推断</text>
+  <text x="600" y="476" text-anchor="middle" class="body">特权状态 + Critic</text>
+  <text x="600" y="501" text-anchor="middle" class="small">提供更稳定训练信号</text>
+  <text x="960" y="476" text-anchor="middle" class="body">PPO + 辅助损失</text>
+  <text x="960" y="501" text-anchor="middle" class="small">更新网络参数</text>
+  <path d="M350 481H485M710 481H845" class="supervise"/>
+  <path d="M240 444C240 390 440 390 440 235" class="supervise"/>
+  <path d="M600 444C600 390 690 390 690 235" class="supervise"/>
+  <text x="600" y="596" text-anchor="middle" class="body">关键边界：Student 学的是“怎样从可测历史推断”，不是在真机上读取仿真真值</text>
+</svg>

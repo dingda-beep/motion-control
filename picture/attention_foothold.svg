@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 20px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 16px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 14px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .grid{fill:#e2e8f0;stroke:#fff;stroke-width:2}
+      .low{fill:#bfdbfe;stroke:#fff;stroke-width:2}
+      .mid{fill:#fcd34d;stroke:#fff;stroke-width:2}
+      .high{fill:#f97316;stroke:#fff;stroke-width:2}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#a)}
+    </style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+  </defs>
+  <rect width="1200" height="560" fill="#f8fafc"/>
+  <text x="600" y="48" text-anchor="middle" class="title">注意力帮助选择地形信息，但高权重不等于真实落脚点</text>
+  <text x="230" y="96" text-anchor="middle" class="head">局部高程网格</text>
+  <g transform="translate(70 120)">
+    <rect x="0" y="0" width="70" height="70" class="grid"/><rect x="72" y="0" width="70" height="70" class="low"/><rect x="144" y="0" width="70" height="70" class="grid"/><rect x="216" y="0" width="70" height="70" class="grid"/><rect x="288" y="0" width="70" height="70" class="grid"/>
+    <rect x="0" y="72" width="70" height="70" class="grid"/><rect x="72" y="72" width="70" height="70" class="low"/><rect x="144" y="72" width="70" height="70" class="mid"/><rect x="216" y="72" width="70" height="70" class="high"/><rect x="288" y="72" width="70" height="70" class="grid"/>
+    <rect x="0" y="144" width="70" height="70" class="grid"/><rect x="72" y="144" width="70" height="70" class="grid"/><rect x="144" y="144" width="70" height="70" class="mid"/><rect x="216" y="144" width="70" height="70" class="high"/><rect x="288" y="144" width="70" height="70" class="grid"/>
+    <rect x="0" y="216" width="70" height="70" class="grid"/><rect x="72" y="216" width="70" height="70" class="low"/><rect x="144" y="216" width="70" height="70" class="grid"/><rect x="216" y="216" width="70" height="70" class="grid"/><rect x="288" y="216" width="70" height="70" class="grid"/>
+  </g>
+  <text x="250" y="445" text-anchor="middle" class="small">蓝色低权重 → 黄色中等 → 橙色高权重</text>
+
+  <rect x="515" y="155" width="200" height="130" rx="18" fill="#fff" stroke="#a78bfa" stroke-width="3"/>
+  <text x="615" y="195" text-anchor="middle" class="head">注意力模块</text>
+  <text x="615" y="228" text-anchor="middle" class="body">Query：状态与命令</text>
+  <text x="615" y="258" text-anchor="middle" class="body">Key/Value：网格特征</text>
+  <path d="M430 262H510" class="arrow"/>
+
+  <rect x="810" y="125" width="310" height="205" rx="18" fill="#fff" stroke="#4ade80" stroke-width="3"/>
+  <text x="965" y="165" text-anchor="middle" class="head">策略使用加权地形特征</text>
+  <text x="965" y="204" text-anchor="middle" class="body">结合腿长、速度和当前姿态</text>
+  <text x="965" y="238" text-anchor="middle" class="body">生成摆动脚与关节动作</text>
+  <text x="965" y="284" text-anchor="middle" class="small">实际脚落在哪里，还取决于动力学与执行</text>
+  <path d="M715 220H805" class="arrow"/>
+
+  <text x="600" y="500" text-anchor="middle" class="body">验证注意力是否真的影响决策：遮挡、替换局部高度，再比较动作与真实落脚变化</text>
+</svg>
