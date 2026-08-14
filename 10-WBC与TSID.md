@@ -8,6 +8,14 @@
 >
 > **下一步**：[第 11 章](11-SRBD与凸MPC.md)和[第 12 章](12-质心动力学与NMPC.md)说明高层参考怎样预测出来。
 
+## 怎么读这一章
+
+- **第一遍读第 1～4 节**：只理解 WBC 为什么必须把“脚不能动、身体要稳、手要移动、电机有限”放在一起处理。
+- **第二遍读第 5～7 节**：再看这些要求怎样变成 QP 的变量、代价和约束。
+- **第三遍读第 8～11 节**：把它当作实现与调试地图，不要求第一次记住 HQP 或所有残差。
+
+贯穿本章的场景是：机器人双脚站地，同时想把右手向前伸。脚不能滑，躯干不能随便倒，手又确实要动；若这些要求冲突，控制器必须知道哪些是硬规则、哪些可以暂时让步。
+
 WBC 是 Whole-Body Control，全身控制，用来协调质心、躯干、手脚等全身任务。TSID 是 Task-Space Inverse Dynamics，任务空间逆动力学，用逆动力学把这些任务落实成力矩。不同项目对术语边界略有差别，本章关注共同的优化结构。
 
 ![WBC 的输入、任务代价、物理约束和真实执行](picture/wbc_qp_flow.svg)
@@ -61,6 +69,20 @@ Sᵀτ
 
 在当前控制周期，`M,h,J_c` 都由当前状态估计计算，可视作已知系数，因此对决策变量是线性的。
 
+这些符号即使第 03 章出现过，本章仍原地说明：
+
+- `q`：当前全身配置，包括浮动基位姿和关节角；
+- `v`：当前广义速度，包括浮动基速度和关节速度；
+- `v_dot`：QP 要选择的广义加速度；
+- `M(q)`：全身质量矩阵，表达当前姿态下各方向的惯性耦合；
+- `h(q,v)`：重力、科里奥利和离心等已知模型项；
+- `Sᵀτ`：把 `n` 个关节电机力矩放进 `6+n` 维全身广义力；
+- `J_c`：当前接触点雅可比；
+- `λ`：环境施加给机器人的接触力或 wrench；
+- `J_cᵀλ`：接触作用转换成的全身广义力。
+
+这里的 `λ` 方向必须与第 03 章一致：表示“环境对机器人”，不是“机器人对环境”。
+
 ### 刚性接触
 
 ```text
@@ -71,9 +93,11 @@ J_c · v_dot
 
 它限制支撑脚的加速度为零。
 
+其中 `J_dot,c` 是接触雅可比 `J_c` 随时间的变化率，`J_dot,c·v` 表示机器人已经在运动时，雅可比本身变化造成的那部分接触点加速度。
+
 ## 4. 任务如何写成加速度目标
 
-例如末端位置误差：
+例如右手末端位置任务。这里的 `x` 是整个任务变量，不是只指世界坐标的 x 轴：
 
 ```text
 x_ddot,cmd
@@ -84,7 +108,9 @@ x_ddot,des
 ```
 
 - `x_ddot,cmd`：带反馈修正的命令加速度；
-- `des`：desired，期望；
+- `x、x_dot`：由当前状态估计经过运动学得到的任务位置和速度；
+- `x_des、x_dot,des、x_ddot,des`：上游参考给出的期望位置、速度和前馈加速度；
+- `des`：desired，期望；`cmd`：command，经过反馈修正后交给 WBC 的命令；
 - `K_p,K_d`：任务空间增益。
 
 实际任务加速度：
@@ -106,17 +132,21 @@ J · v_dot
 -x_ddot,cmd
 ```
 
-加入代价：
+加入代价。为避免与雅可比矩阵 `J` 混淆，把任务代价明确写成 `Cost_task`：
 
 ```text
-J_task
+Cost_task
 =
 ‖e_task‖_W²
 =
 e_taskᵀ · W · e_task
 ```
 
-`W` 是任务权重矩阵。
+- `W`：任务权重矩阵，决定任务各方向的误差有多重要；
+- `‖e_task‖_W²`：加权误差平方，不是普通长度；
+- `e_taskᵀWe_task`：把所有加权误差合成一个非负分数，分数越小表示任务加速度越接近命令。
+
+位置、转角等不同任务的单位不同，直接使用巨大权重可能只是掩盖尺度问题。实际实现应先按可接受误差做归一化，再讨论优先级。
 
 ## 5. 不等式约束
 
@@ -138,7 +168,7 @@ e_taskᵀ · W · e_task
 
 ### 关节下一步限位
 
-可用短时预测近似：
+可用短时预测近似。下面只对可驱动关节写公式，不直接用它更新四元数浮动基：
 
 ```text
 q_next
@@ -150,17 +180,27 @@ q
 
 再限制 `q_min ≤ q_next ≤ q_max`。
 
+- `q、q_dot、q_ddot`：当前关节位置、速度和候选关节加速度；`q_ddot` 是广义加速度 `v_dot` 中属于关节的那一部分；
+- `Δt`：从当前控制周期到下一周期的短时间；
+- `q_min、q_max`：关节允许的位置下限和上限；
+- 这只是一步近似，不能代替较长时域中的完整限位预测。
+
 ## 6. 加权任务与严格优先级
 
 ### 加权和
 
 ```text
-J=
-w_comJ_com
-+w_torsoJ_torso
-+w_swingJ_swing
+Cost=
+w_com Cost_com
++w_torso Cost_torso
++w_swing Cost_swing
 +w_τ‖τ‖²
 ```
+
+- `Cost_com、Cost_torso、Cost_swing`：质心、躯干和摆动脚各自的非负任务代价；
+- `w_com、w_torso、w_swing`：三类任务的权重；
+- `w_τ‖τ‖²`：对过大关节力矩的惩罚；
+- `Cost`：把这些偏好合成后的总分，QP 会尽量让它小。
 
 实现简单，但“权重 1000”不等于数学意义上的绝对优先。任务尺度和数值条件会影响结果。
 
@@ -178,30 +218,31 @@ HQP 是 Hierarchical Quadratic Programming，层级二次规划：
 
 ```go
 // 根据当前状态估计计算动力学和接触运动学中的已知系数。
-m, h := dynamics(q, v)
-jc, dJcV := contactKinematics(q, v)
+massMatrix, biasForce := dynamics(q, v)
+contactJacobian, contactBiasAcceleration := contactKinematics(q, v)
 
 // QP 的未知量包括广义加速度、关节力矩和接触力。
 decision := DecisionVariables{
-	Acceleration: dv,
-	Torque:       tau,
-	ContactForce: contactForce,
+	Acceleration: NewVariable("v_dot"),
+	Torque:       NewVariable("tau"),
+	ContactForce: NewVariable("lambda"),
 }
 
 constraints := []Constraint{
-	wholeBodyDynamics(m, h, decision), // 必须满足全身动力学
-	rigidContact(jc, dJcV, decision),  // 支撑脚不能穿地或滑动
-	lowerTorqueLimit(torqueMin, tau),  // 关节力矩下限
-	upperTorqueLimit(tau, torqueMax),  // 关节力矩上限
-	frictionPyramid(contactForce),     // 接触力不能超过摩擦能力
+	wholeBodyDynamics(massMatrix, biasForce, decision),
+	rigidContact(contactJacobian, contactBiasAcceleration, decision),
+	torqueLimits(torqueMin, decision.Torque, torqueMax),
+	frictionPyramid(decision.ContactForce),
 }
 
 // 各项代价分别衡量质心、躯干、摆动脚和力矩使用情况。
-cost := weightedNorm(Sub(comTask(dv), comAccCmd), wCOM) +
-	weightedNorm(Sub(torsoTask(dv), torsoAccCmd), wTorso) +
-	weightedNorm(Sub(swingTask(dv), swingAccCmd), wSwing) +
-	weightedNorm(tau, wTorque)
+cost := weightedNorm(Sub(comTask(decision.Acceleration), comAccCmd), wCOM) +
+	weightedNorm(Sub(torsoTask(decision.Acceleration), torsoAccCmd), wTorso) +
+	weightedNorm(Sub(swingTask(decision.Acceleration), swingAccCmd), wSwing) +
+	weightedNorm(decision.Torque, wTorque)
 ```
+
+这段代码是结构化伪代码：`NewVariable` 表示创建 QP 中尚未求值的变量，不是把当前测量赋给它；`contactBiasAcceleration` 对应公式中的已知项 `J_dot,c·v`；`weightedNorm` 返回相应加权平方代价。真正实现还需要明确每个变量的维度、单位和排列顺序。
 
 求解后只把 `τ` 发给电机，其余变量是帮助满足动力学的内部决策。
 

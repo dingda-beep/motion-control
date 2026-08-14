@@ -8,6 +8,12 @@
 >
 > **下一步**：[第 12 章：质心动力学与 NMPC](12-质心动力学与NMPC.md)比较更完整但更难求解的模型。
 
+## 怎么读这一章
+
+- **第一遍读第 1～4 节和第 7 节**：理解为什么高层暂时把机器人看成一个刚体，以及 MPC 输出的接触力为什么还不能直接送给电机。
+- **第二遍读第 5～6、9 节**：再看目标、摩擦约束和接触计划。
+- 第 8、10 节是实现与局限速查。第一次不要求自己推导线性化矩阵。
+
 SRBD 是 Single Rigid Body Dynamics，单刚体动力学：把整台机器人近似成一个刚体。Convex MPC 是 Convex Model Predictive Control，凸模型预测控制：用容易快速求解的凸优化问题预测未来接触力。
 
 ![SRBD、凸 MPC、WBC 与真实机器人之间的分层关系](picture/srbd_mpc_wbc.svg)
@@ -36,7 +42,11 @@ m · g
 - `c`：质心位置；
 - `c_ddot`：质心加速度；
 - `n_c`：当前接触点数量；
-- `f_i`：第 `i` 个接触力。
+- `f_i`：环境在第 `i` 个接触点施加给机器人的力；
+- `g`：世界坐标系中的重力加速度向量，例如 `[0,0,-9.81]ᵀ m/s²`；
+- `Σ[i=1→n_c]`：把所有当前接触力相加。
+
+这里 `c、c_ddot、g、f_i` 必须在同一坐标系表达，通常选世界坐标系。
 
 ## 3. 转动动力学
 
@@ -54,7 +64,9 @@ I · ω_dot
 - `p_i`：接触点位置；
 - `ω×(Iω)`：陀螺耦合项。
 
-右侧表示每个接触力对质心产生的力矩。
+这一形式采用机体坐标下近似固定的惯量 `I`，因此 `ω`、力臂和接触力也要转换到匹配的机体坐标再代入。若全部使用世界坐标，则世界系惯量会随姿态变化，公式不能不加处理地照抄。
+
+右侧表示每个接触力对质心产生的力矩。本式把接触简化成点力；若脚底接触还能直接传递外力矩，还应把对应的接触力矩一并加入右侧。
 
 ## 4. 如何变成凸问题
 
@@ -80,6 +92,8 @@ A_k · x[k]
 - `d[k]`：重力等已知偏置；
 - `A_k,B_k`：当前参考附近的线性模型。
 
+`x[k]` 的具体排列必须由实现声明，例如可包含质心位置、质心速度、姿态误差和角速度。它不是第 02 章的末端位置变量。`A_k、B_k` 的下标 `k` 表示线性化结果可能沿参考轨迹逐步变化。
+
 ## 5. MPC 目标
 
 ```text
@@ -92,29 +106,40 @@ A_k · x[k]
 
 第一项追踪质心位置、速度和身体姿态；第二项避免接触力过大或分配剧烈。
 
+- `N`：预测步数；
+- `Q`：状态跟踪误差权重矩阵；
+- `R`：接触力大小权重矩阵；
+- `u[k]`：第 `k` 步所有候选接触力拼成的向量。
+
 还可惩罚输入变化：
 
 ```text
-‖u[k]-u[k-1]‖² weighted by R_Δ
+Cost_Δu
+=
+Σ[k=1→N-1]
+(u[k]-u[k-1])ᵀ R_Δ (u[k]-u[k-1])
 ```
 
-使接触力更平滑。
+- `R_Δ`：相邻两步接触力变化的权重矩阵；
+- `Cost_Δu`：接触力跳变代价，越小表示序列越平滑。
 
 ## 6. 接触约束
 
 支撑脚：
 
 ```text
-λ_z≥0,
-|λ_x|≤μλ_z,
-|λ_y|≤μλ_z
+f_i,z≥0,
+|f_i,x|≤μf_i,z,
+|f_i,y|≤μf_i,z
 ```
 
 摆动脚：
 
 ```text
-f_i,k=0
+f_i[k]=0
 ```
+
+这里统一用 `f_i` 表示第 `i` 只脚的接触力。支撑脚必须满足单边接触和摩擦近似；摆动脚没有接触地面，所以它的候选接触力必须为零。
 
 若接触时序已知，这些都是线性约束，整个问题成为 QP（Quadratic Programming，二次规划），也就是“二次目标 + 线性约束”的优化问题。
 
@@ -132,6 +157,8 @@ MPC 输出的是每只脚应该通过地面产生的力。电机需要的是关�
 
 快，但没有统一处理完整动力学和其他任务。
 
+这里仍约定 `f_i` 是地面对机器人的力。该近似只给出这些外力通过各腿产生的关节广义力贡献；重力、惯性、关节运动、多个任务和符号约定仍要处理，所以它不是一条完整电机命令公式。
+
 ### 低层 WBC
 
 WBC（Whole-Body Control，全身控制）负责把高层接触力和身体运动参考落实成关节力矩。
@@ -139,9 +166,14 @@ WBC（Whole-Body Control，全身控制）负责把高层接触力和身体运�
 把 MPC 的 `f_ref` 作为 WBC 任务：
 
 ```text
-J_f=
+Cost_force=
 ‖λ-λ_ref‖_W_f²
 ```
+
+- `λ_ref`：MPC 给出的期望接触力；
+- `λ`：WBC 当前选择的接触力；
+- `W_f`：接触力跟踪权重；
+- `Cost_force`：两者差异的加权平方代价。
 
 WBC 再结合全身动力学、摆动脚、姿态、限幅求关节力矩。这就是：
 
@@ -162,12 +194,16 @@ func mpcUpdate(
 	contactSchedule ContactSchedule,
 ) ContactForce {
 	// 在当前状态估计附近建立线性的单刚体模型。
-	a, b, d := linearizedSRBD(estimatedState, contactSchedule)
+	stateMatrix, inputMatrix, bias := linearizedSRBD(estimatedState, contactSchedule)
 
 	// 把跟踪目标和摩擦限制组装成二次规划问题。
-	h, g := buildQuadraticCost(a, b, d, reference)
-	c, lower, upper := buildFrictionConstraints(contactSchedule)
-	forceSequence := solveQP(h, g, c, lower, upper)
+	costHessian, costLinear := buildQuadraticCost(
+		stateMatrix, inputMatrix, bias, reference,
+	)
+	constraintMatrix, lower, upper := buildFrictionConstraints(contactSchedule)
+	forceSequence := solveQP(
+		costHessian, costLinear, constraintMatrix, lower, upper,
+	)
 
 	// MPC 只执行最优序列中的第一步。
 	return forceSequence.First()
