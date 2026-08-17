@@ -60,6 +60,7 @@
 | DAgger | Dataset Aggregation | 数据集聚合 |
 | DR | Domain Randomization | 域随机化 |
 | FB | Forward-Backward Representation | 前向-后向表征 |
+| [FBCPR](https://arxiv.org/abs/2504.11054) | Forward-Backward Representations with Conditional-Policy Regularization | 带条件策略正则的前向—后向表征 |
 | FOV | Field of View | 视场 |
 | FSQ | Finite Scalar Quantization | 有限标量量化 |
 | GAE | Generalized Advantage Estimation | 广义优势估计 |
@@ -79,7 +80,7 @@
 | RNN | Recurrent Neural Network | 循环神经网络 |
 | VAE | Variational Autoencoder | 变分自编码器 |
 
-> FBCPR 是蓝本和相关实现中出现的组合方案标签，不宜脱离具体论文强行按字母展开。本教程按“FB 表征 + 对抗风格正则 + 物理惩罚”理解它。
+> FBCPR 是具体方法名，不是对“风格损失 + 物理惩罚”的通用简称。正文仍应回到论文所定义的条件策略正则、数据和部署方式理解。
 
 ## 3. 系统与数据缩写
 
