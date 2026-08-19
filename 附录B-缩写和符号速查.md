@@ -69,7 +69,7 @@
 | KL | Kullback–Leibler Divergence | KL 散度 |
 | MDP | Markov Decision Process | 马尔可夫决策过程 |
 | MHA | Multi-Head Attention | 多头注意力 |
-| MLP | Multi-Layer Perceptron | 多层感知机 |
+| MLP | Multi-Layer Perceptron | 多层感知机；本书从输入、隐藏层到 Actor/Critic 的完整解释见[第 13 章](13-强化学习基础.md)第 6 节 |
 | OOD | Out of Distribution | 分布外 |
 | POMDP | Partially Observable MDP | 部分可观测 MDP |
 | PIE | Parkour with Implicit-Explicit Learning Framework for Legged Robots | 面向腿足机器人跑酷的隐式—显式学习框架 |
