@@ -127,6 +127,7 @@
 | latent | 潜变量/隐表示 |
 | locomotion | 移动运动，腿足语境下常指行走奔跑能力 |
 | observation/obs | 策略或估计器可见的观测 |
+| Oracle | 某项诊断中临时获得理想信息、真值或理想选择规则的参照者；不是固定网络结构，也不自动等于 Teacher |
 | policy | 策略 |
 | proprioception | 本体感知 |
 | rank | 秩；矩阵能独立产生或保留的方向数 |
