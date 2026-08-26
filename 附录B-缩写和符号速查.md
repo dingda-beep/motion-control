@@ -35,6 +35,7 @@
 | NLP | Nonlinear Programming | 非线性规划 |
 | NMPC | Nonlinear Model Predictive Control | 非线性模型预测控制 |
 | OCP | Optimal Control Problem | 最优控制问题 |
+| PD | Proportional-Derivative | 比例—微分控制；位置误差产生拉回作用，速度误差产生阻尼作用 |
 | QDD | Quasi-Direct Drive | 准直驱 |
 | QP | Quadratic Programming | 二次规划 |
 | SEA | Series Elastic Actuator | 串联弹性执行器 |
@@ -168,7 +169,11 @@
 | `T` | 齐次变换 | 旋转无单位、平移 m |
 | `ω` | 角速度 | rad/s |
 | `M` | 质量矩阵 | 混合单位 |
-| `J` | 雅可比矩阵；有些论文也用它表示代价，本书正文尽量将代价写作 `Cost` | 取决于语境 |
+| `J` | 雅可比矩阵；单关节 PD 增益专题也沿用常见写法，用标量 `J` 表示等效转动惯量；有些论文还用它表示代价 | 雅可比依语境，转动惯量为 kg·m² |
+| `K_p` | PD 的位置增益，可理解为虚拟弹簧刚度 | N·m/rad |
+| `K_d` | PD 的速度增益，可理解为虚拟阻尼强度 | N·m·s/rad |
+| `ω_n` | 标准二阶系统的自然角频率，描述名义反应的快慢；不是控制循环频率 | rad/s |
+| `ζ` | 标准二阶系统的阻尼比 | 无 |
 | `τ` | 关节力矩 | N·m |
 | `λ` | 接触力/wrench；RL 中也可能是 GAE 参数 | N、N·m 或无 |
 | `f` | 力 | N |
