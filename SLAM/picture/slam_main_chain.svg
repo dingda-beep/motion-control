@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#39516f"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#23344d" flood-opacity="0.16"/>
+    </filter>
+    <style>
+      .title{font:700 34px sans-serif;fill:#17233b}
+      .box-title{font:700 23px sans-serif;fill:#17233b}
+      .body{font:18px sans-serif;fill:#334766}
+      .small{font:16px sans-serif;fill:#526680}
+      .arrow{stroke:#39516f;stroke-width:3;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="#f7f9fc"/>
+  <text x="640" y="58" text-anchor="middle" class="title">SLAM 的唯一主线：根据证据持续预测、比较和纠错</text>
+
+  <g filter="url(#shadow)">
+    <rect x="55" y="130" width="205" height="150" rx="22" fill="#e7f0ff" stroke="#6f9ddb" stroke-width="2"/>
+    <text x="158" y="174" text-anchor="middle" class="box-title">真实世界</text>
+    <text x="158" y="211" text-anchor="middle" class="body">真实轨迹 x_real</text>
+    <text x="158" y="241" text-anchor="middle" class="body">真实环境 m_real</text>
+
+    <rect x="310" y="130" width="205" height="150" rx="22" fill="#fff3d9" stroke="#d9a94a" stroke-width="2"/>
+    <text x="413" y="174" text-anchor="middle" class="box-title">局部测量 z</text>
+    <text x="413" y="211" text-anchor="middle" class="body">图像 · 激光</text>
+    <text x="413" y="241" text-anchor="middle" class="body">IMU · 轮速</text>
+
+    <rect x="565" y="130" width="205" height="150" rx="22" fill="#fae8ec" stroke="#c76a7d" stroke-width="2"/>
+    <text x="668" y="174" text-anchor="middle" class="box-title">数据关联</text>
+    <text x="668" y="211" text-anchor="middle" class="body">哪些观测来自</text>
+    <text x="668" y="241" text-anchor="middle" class="body">同一地点？</text>
+
+    <rect x="820" y="130" width="205" height="150" rx="22" fill="#e7f7ed" stroke="#58a977" stroke-width="2"/>
+    <text x="923" y="174" text-anchor="middle" class="box-title">前端</text>
+    <text x="923" y="211" text-anchor="middle" class="body">短时位姿</text>
+    <text x="923" y="241" text-anchor="middle" class="body">局部地图</text>
+
+    <rect x="1075" y="130" width="150" height="150" rx="22" fill="#eee9ff" stroke="#806bc0" stroke-width="2"/>
+    <text x="1150" y="174" text-anchor="middle" class="box-title">后端</text>
+    <text x="1150" y="211" text-anchor="middle" class="body">历史联合纠错</text>
+    <text x="1150" y="241" text-anchor="middle" class="body">回环约束</text>
+  </g>
+
+  <path d="M260 205 H300" class="arrow"/>
+  <path d="M515 205 H555" class="arrow"/>
+  <path d="M770 205 H810" class="arrow"/>
+  <path d="M1025 205 H1065" class="arrow"/>
+
+  <g filter="url(#shadow)">
+    <rect x="275" y="425" width="330" height="150" rx="24" fill="#eaf7f8" stroke="#4b9da4" stroke-width="2"/>
+    <text x="440" y="472" text-anchor="middle" class="box-title">当前估计，而非真值</text>
+    <text x="440" y="511" text-anchor="middle" class="body">轨迹 x_hat + 地图 m_hat</text>
+    <text x="440" y="544" text-anchor="middle" class="small">新证据到来后仍可被修正</text>
+
+    <rect x="685" y="425" width="330" height="150" rx="24" fill="#f1f3f6" stroke="#78889f" stroke-width="2"/>
+    <text x="850" y="472" text-anchor="middle" class="box-title">下游机器人任务</text>
+    <text x="850" y="511" text-anchor="middle" class="body">导航 · 避障 · 规划 · 控制</text>
+    <text x="850" y="544" text-anchor="middle" class="small">要求时间、坐标和质量状态明确</text>
+  </g>
+
+  <path d="M1150 290 C1150 365 980 365 605 460" class="arrow"/>
+  <path d="M605 500 H675" class="arrow"/>
+  <path d="M440 415 C440 350 925 370 925 290" class="arrow"/>
+  <text x="676" y="351" text-anchor="middle" class="small">用估计预测下一次测量，再与真实测量比较</text>
+  <text x="640" y="662" text-anchor="middle" class="small">传感器给证据；算法维护解释；现实反馈决定解释能否继续成立。</text>
+</svg>

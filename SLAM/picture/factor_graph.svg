@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <style>
+      .title{font:700 32px sans-serif;fill:#17233b}
+      .head{font:700 21px sans-serif;fill:#243a57}
+      .body{font:18px sans-serif;fill:#41566f}
+      .small{font:16px sans-serif;fill:#60738a}
+      .edge{stroke:#71849b;stroke-width:4}
+      .variable{fill:#e7f0ff;stroke:#5688c7;stroke-width:3}
+      .landmark{fill:#e7f7ed;stroke:#56a275;stroke-width:3}
+      .factor{fill:#fff0d3;stroke:#cc9639;stroke-width:3}
+      .loop{fill:#f7e3e8;stroke:#bd6074;stroke-width:3}
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text x="640" y="55" text-anchor="middle" class="title">因子图：圆圈是待估变量，方块是测量带来的约束</text>
+
+  <line x1="225" y1="315" x2="375" y2="315" class="edge"/>
+  <line x1="425" y1="315" x2="575" y2="315" class="edge"/>
+  <line x1="625" y1="315" x2="775" y2="315" class="edge"/>
+  <line x1="825" y1="315" x2="975" y2="315" class="edge"/>
+
+  <circle cx="175" cy="315" r="52" class="variable"/>
+  <text x="175" y="308" text-anchor="middle" class="head">状态 x₁</text>
+  <text x="175" y="337" text-anchor="middle" class="small">位姿/速度/零偏</text>
+  <rect x="375" y="280" width="50" height="70" rx="8" class="factor"/>
+  <text x="400" y="308" text-anchor="middle" class="body">IMU</text>
+  <text x="400" y="332" text-anchor="middle" class="small">因子</text>
+  <circle cx="575" cy="315" r="52" class="variable"/>
+  <text x="575" y="308" text-anchor="middle" class="head">状态 x₂</text>
+  <text x="575" y="337" text-anchor="middle" class="small">位姿/速度/零偏</text>
+  <rect x="775" y="280" width="50" height="70" rx="8" class="factor"/>
+  <text x="800" y="308" text-anchor="middle" class="body">IMU</text>
+  <text x="800" y="332" text-anchor="middle" class="small">因子</text>
+  <circle cx="1025" cy="315" r="52" class="variable"/>
+  <text x="1025" y="308" text-anchor="middle" class="head">状态 x₃</text>
+  <text x="1025" y="337" text-anchor="middle" class="small">位姿/速度/零偏</text>
+
+  <circle cx="400" cy="555" r="47" class="landmark"/>
+  <text x="400" y="550" text-anchor="middle" class="head">地图点 P</text>
+  <text x="400" y="578" text-anchor="middle" class="small">三维位置</text>
+  <rect x="545" y="445" width="60" height="60" rx="8" class="factor"/>
+  <text x="575" y="472" text-anchor="middle" class="small">视觉</text>
+  <text x="575" y="493" text-anchor="middle" class="small">因子</text>
+  <line x1="434" y1="520" x2="548" y2="500" class="edge"/>
+  <line x1="575" y1="445" x2="575" y2="367" class="edge"/>
+
+  <rect x="995" y="105" width="60" height="60" rx="8" class="loop"/>
+  <text x="1025" y="132" text-anchor="middle" class="small">回环</text>
+  <text x="1025" y="153" text-anchor="middle" class="small">因子</text>
+  <line x1="995" y1="135" x2="215" y2="275" class="edge"/>
+  <line x1="1025" y1="165" x2="1025" y2="263" class="edge"/>
+
+  <text x="170" y="440" text-anchor="middle" class="body">变量会被优化修改</text>
+  <text x="170" y="468" text-anchor="middle" class="small">它们是当前估计，不是真值</text>
+  <text x="865" y="520" text-anchor="middle" class="body">因子 = 测量 + 关联 + 模型 + 权重</text>
+  <text x="865" y="552" text-anchor="middle" class="small">错误因子也会认真地把图拉向错误答案</text>
+  <text x="640" y="665" text-anchor="middle" class="body">后端寻找一组变量，使所有可信因子的残差总体尽量小。</text>
+</svg>
