@@ -1,0 +1,88 @@
+{
+  "note": "教学用单步奖励账本，不复刻任何官方任务的完整奖励实现",
+  "terms": [
+    {
+      "name": "track_velocity",
+      "metric": "velocity_error_mps",
+      "transform": "exp_negative_square",
+      "sigma": 0.5,
+      "weight": 1.0
+    },
+    {
+      "name": "alive",
+      "metric": "alive",
+      "transform": "identity",
+      "weight": 0.15
+    },
+    {
+      "name": "tilt_cost",
+      "metric": "tilt_rad",
+      "transform": "square",
+      "weight": -5.0
+    },
+    {
+      "name": "action_rate_cost",
+      "metric": "action_rate",
+      "transform": "square",
+      "weight": -0.05
+    },
+    {
+      "name": "feet_slide_cost",
+      "metric": "feet_slide_speed_mps",
+      "transform": "square",
+      "weight": -0.2
+    },
+    {
+      "name": "undesired_contact_cost",
+      "metric": "undesired_contact_count",
+      "transform": "identity",
+      "weight": -1.0
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "零命令安静站立",
+      "metrics": {
+        "velocity_error_mps": 0.0,
+        "alive": 1.0,
+        "tilt_rad": 0.02,
+        "action_rate": 0.02,
+        "feet_slide_speed_mps": 0.0,
+        "undesired_contact_count": 0.0
+      }
+    },
+    {
+      "name": "要求前进但拒绝移动",
+      "metrics": {
+        "velocity_error_mps": 0.5,
+        "alive": 1.0,
+        "tilt_rad": 0.02,
+        "action_rate": 0.01,
+        "feet_slide_speed_mps": 0.0,
+        "undesired_contact_count": 0.0
+      }
+    },
+    {
+      "name": "速度跟上但脚在滑",
+      "metrics": {
+        "velocity_error_mps": 0.05,
+        "alive": 1.0,
+        "tilt_rad": 0.08,
+        "action_rate": 0.4,
+        "feet_slide_speed_mps": 0.8,
+        "undesired_contact_count": 0.0
+      }
+    },
+    {
+      "name": "用膝盖接触地面",
+      "metrics": {
+        "velocity_error_mps": 0.1,
+        "alive": 1.0,
+        "tilt_rad": 0.3,
+        "action_rate": 0.2,
+        "feet_slide_speed_mps": 0.1,
+        "undesired_contact_count": 1.0
+      }
+    }
+  ]
+}
