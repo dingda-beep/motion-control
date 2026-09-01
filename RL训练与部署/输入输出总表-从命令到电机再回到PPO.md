@@ -10,8 +10,13 @@
 ### 1. 上层产生目标
 
 ```text
+# 上层可能是遥控器或导航器；运控只消费统一的三维速度接口。
 command_3 = command_source()
-command_3 = [vx_cmd, vy_cmd, vyaw_cmd]
+command_3 = [
+    vx_cmd,   # 前后速度目标，m/s
+    vy_cmd,   # 左右速度目标，m/s
+    vyaw_cmd  # 转向角速度目标，rad/s
+]
 ```
 
 | 问题 | 答案 |
@@ -27,6 +32,7 @@ command_3 = [vx_cmd, vy_cmd, vyaw_cmd]
 ### 2. SDK 读取身体反馈
 
 ```text
+# 这些都是机器人反馈；不要把 q、dq 误认为 Actor 生成的量。
 q_29, dq_29, imu = sdk.read_state()
 ```
 
@@ -42,14 +48,16 @@ q_29, dq_29, imu = sdk.read_state()
 ### 3. 构造 480 维观测
 
 ```text
+# 输入由“真实反馈 + 上层目标 + 控制器记忆”三类数据组成。
 obs_480 = observation_builder(
-    imu,
-    q_29,
-    dq_29,
-    command_3,
-    last_action_29,
-    history_5
+    imu,            # 角速度与姿态，用来得到投影重力
+    q_29,           # 当前关节角
+    dq_29,          # 当前关节速度
+    command_3,      # 希望速度，不是测得的实际水平速度
+    last_action_29, # 上一策略动作
+    history_5       # 最近 5 帧，按契约规定的顺序排列
 )
+# 输出必须严格为 480 维，下一站只有 Actor。
 ```
 
 当前案例一帧：
@@ -69,6 +77,7 @@ base_ang_vel 3
 ### 4. actor 产生 29 维原始动作
 
 ```text
+# 网络只做数值映射：480 个有固定语义的输入 → 29 个无量纲动作。
 raw_action_29 = actor(obs_480)
 ```
 
@@ -82,6 +91,7 @@ raw_action_29 = actor(obs_480)
 ### 5. 动作处理器产生 `q_des`
 
 ```text
+# 先在策略关节顺序中解释动作，再重排到 SDK 电机顺序。
 q_des_policy_order = q_default + 0.25 × raw_action
 q_des_sdk_order    = remap(q_des_policy_order, policy_to_sdk)
 ```
@@ -94,6 +104,7 @@ q_des_sdk_order    = remap(q_des_policy_order, policy_to_sdk)
 ### 6. 电机位置接口形成力矩
 
 ```text
+# q_des/dq_des 是目标，q/dq 是驱动反馈；二者不能混为同一组量。
 tau_cmd = tau_ff + Kp(q_des - q) + Kd(dq_des - dq)
 ```
 
@@ -119,13 +130,15 @@ q, dq = 当前关节位置与速度
 ### 7. 现实给出下一次反馈
 
 ```text
+# 输入是已经形成的力矩和现实物理条件；这里不是一个可在真机上直接调用的软件函数。
 next_real_state = real_world(
-    tau_cmd,
-    robot_body,
-    contact,
-    disturbances,
-    elapsed_time
+    tau_cmd,      # 电机在本段时间里实际施加的作用
+    robot_body,   # 真实质量、惯量、柔性、传动等
+    contact,      # 足底与地面的真实接触
+    disturbances, # 外力、地面变化和未建模影响
+    elapsed_time  # 从本状态向未来演化的时间
 )
+# 输出再被传感器测量，成为下一个控制周期的新反馈。
 ```
 
 传感器再读取 `next_real_state`，闭环回到第 2 步。神经网络没有单独“让机器人走”；完整环路共同产生了走路。
@@ -135,6 +148,7 @@ next_real_state = real_world(
 ### 8. 仿真器替代现实产生下一状态
 
 ```text
+# 训练时由仿真器预测动作后果，同时返回奖励/终止需要的接触信息。
 next_state, contacts = simulator.step(motor_command)
 ```
 
@@ -143,12 +157,13 @@ next_state, contacts = simulator.step(motor_command)
 ### 9. 奖励函数给这次转移记分
 
 ```text
+# 这些输入描述“刚才做了什么、世界怎样变化”；奖励只服务训练。
 reward = reward_fn(
-    state,
-    action,
-    next_state,
-    command,
-    contacts
+    state,      # 动作前状态
+    action,     # Actor 本步动作
+    next_state, # 推进物理后的状态
+    command,    # 本步要求跟随的目标
+    contacts    # 足部和非期望身体接触
 )
 ```
 
@@ -157,6 +172,7 @@ reward = reward_fn(
 ### 10. 终止函数决定这段经验是否结束
 
 ```text
+# done 决定这段 rollout 是否在此结束；reason 用来区分失败和正常截断。
 done, reason = termination_fn(next_state, contacts, elapsed_time)
 ```
 
@@ -165,6 +181,7 @@ done, reason = termination_fn(next_state, contacts, elapsed_time)
 ### 11. rollout 收集一批接口调用记录
 
 ```text
+# 保存动作发生当时的数据；PPO 更新时必须知道它来自哪一个旧策略分布。
 rollout.add(obs, action, reward, done, value, action_probability)
 ```
 
@@ -173,6 +190,7 @@ rollout.add(obs, action, reward, done, value, action_probability)
 ### 12. PPO 更新网络参数
 
 ```text
+# 输入是刚采集的一批经验；输出是下一轮采样要使用的新网络参数。
 new_actor, new_critic = ppo_update(rollout)
 ```
 
@@ -185,9 +203,10 @@ critic 可以在训练时额外看仿真真值，输出当前局面的价值估�
 ### 13. 导出把训练结果冻结成部署输入
 
 ```text
+# checkpoint 给参数，resolved_environment 给这些参数两端的现实含义。
 policy.onnx, deploy_config = export(
-    selected_checkpoint,
-    resolved_environment
+    selected_checkpoint, # 通过固定评估选中的参数快照
+    resolved_environment # 实际生效的观测、动作、周期、关节与归一化配置
 )
 ```
 

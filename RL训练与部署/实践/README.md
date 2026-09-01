@@ -19,10 +19,17 @@ policy index → SDK index 的双射
 
 配置文件明确带有：
 
-```json
-"artifact_kind": "teaching_example_not_for_hardware",
-"deployment_authorized": false
+```jsonc
+{
+  // 声明这是教学快照，不能把里面的 G1 参数当作真机批准配置。
+  "artifact_kind": "teaching_example_not_for_hardware",
+
+  // 即使其他字段都通过检查，本文件也不授予发送真机命令的权限。
+  "deployment_authorized": false
+}
 ```
+
+这里用 `jsonc` 只是为了在讲义中展示注释；磁盘上的实际配置仍是标准 JSON，不包含 `//` 注释，可被 Python `json` 模块直接读取。
 
 它不会也不应连接任何机器人。真实项目必须从自己解析后的训练环境生成契约，并经过硬件团队审核。
 
@@ -33,12 +40,14 @@ policy index → SDK index 的双射
 进入本目录：
 
 ```bash
+# 后续相对路径都以这个实践目录为起点。
 cd RL训练与部署/实践
 ```
 
 校验契约：
 
 ```bash
+# 输入：策略契约 JSON；输出：维度、周期、映射等一致性摘要或明确错误。
 python3 scripts/validate_contract.py \
   config/g1_29dof_policy_contract.example.json
 ```
@@ -46,6 +55,7 @@ python3 scripts/validate_contract.py \
 运行三个纯内存模拟周期：
 
 ```bash
+# 用假状态走三次完整数据链；脚本不会加载 SDK，也不会发送电机命令。
 python3 scripts/run_mock_deployment.py \
   config/g1_29dof_policy_contract.example.json
 ```
@@ -53,6 +63,7 @@ python3 scripts/run_mock_deployment.py \
 把四种行为的奖励逐项记账：
 
 ```bash
+# 把四个假想行为的奖励逐项展开，观察原始指标、变换、权重和贡献。
 python3 scripts/explain_reward.py \
   config/reward_scenarios.example.json
 ```
@@ -62,6 +73,7 @@ python3 scripts/explain_reward.py \
 运行全部测试：
 
 ```bash
+# 自动验证契约、观测、动作、奖励和安全闸门的关键不变量。
 python3 -m unittest discover -s tests -v
 ```
 
@@ -102,3 +114,22 @@ python3 -m unittest discover -s tests -v
 Unitree RL Lab 当前已经能够导出 `deploy.yaml` 的关节映射、周期、PD、默认姿态、动作和观测信息。本实践是在更小的环境里把其背后的工程原则拆开讲清，而不是取代官方部署代码。
 
 准备好安装完整仿真栈后，继续做[训练实验手册](训练实验手册.md)。它把官方 G1 任务拆成短跑体检、站立、小范围前进、扩命令、鲁棒化、导出和 Sim2Sim 等逐级实验。
+
+## 6. 它与成熟开源工程怎样对应
+
+这套代码没有自己虚构一套“迷你框架”，而是把成熟项目中最容易被大工程掩盖的边界单独拆出来：
+
+| 成熟工程中的职责 | 本实践中的教学替身 | 刻意没有实现什么 |
+|---|---|---|
+| Isaac Lab 的 Observation/Action/Reward/Termination 等任务组件 | `observation.py`、`action.py`、`reward.py`、`safety.py` | 并行物理环境、接触传感器和完整任务管理器 |
+| RSL-RL 的 rollout、actor、critic 与 PPO 更新 | 奖励账本只展示会进入 rollout 的标量和明细 | 神经网络、反向传播、优势估计和 PPO 优化 |
+| Unitree 部署程序的“状态 → 观测 → Actor → 关节目标 → 低层命令”循环 | `run_mock_deployment.py` | ONNX Runtime、DDS/SDK 通信和真实电机写入 |
+| 发布前的观测/动作/周期/关节映射一致性 | `contract.py` 与单元测试 | 真实项目的自动配置导出、跨语言 golden test 与发布审批 |
+
+因此，读代码时不要把 `run_mock_deployment.py` 当成训练程序：它故意用全零数组代替 Actor，只为了让你先看清 Actor 前后的数据接口。真正训练由 Isaac Lab 环境和 RSL-RL 完成；真正部署还必须接入经过审核的状态机、硬件 SDK 和安全流程。
+
+继续对照源码时，建议按下面三个入口阅读：
+
+- [Isaac Lab：创建 Manager-Based RL 环境](https://isaac-sim.github.io/IsaacLab/main/source/tutorials/03_envs/create_manager_rl_env.html)：看任务怎样拆成观测、动作、奖励、终止、事件、课程和命令；
+- [RSL-RL 配置与观测组](https://leggedrobotics.github.io/rsl_rl/guide/configuration.html)：看 actor 为什么只能接收部署可得观测，而 critic 可以在训练期额外使用特权观测；
+- [Unitree RL Gym](https://github.com/unitreerobotics/unitree_rl_gym)：看 `Train → Play → Sim2Sim → Sim2Real` 的完整路径，以及真机循环怎样把策略动作变成 `q/qd/kp/kd/tau` 电机包。

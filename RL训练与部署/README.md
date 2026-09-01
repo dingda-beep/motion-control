@@ -15,6 +15,7 @@
 每遇到一个新概念，先把它当成函数，不允许只留下名词：
 
 ```text
+# 先追踪数据从哪里来、经过谁、再交给谁，不先被算法名淹没。
 输出 = 模块(输入)
 ```
 
@@ -29,12 +30,20 @@
 本案例最核心的两个接口是：
 
 ```text
+# 反馈、命令和控制器记忆共同组成 Actor 唯一能看见的输入。
 observation = build_observation(
-    IMU, joint_q, joint_dq, velocity_command, last_action, history
+    IMU,              # 机身角速度和姿态信息
+    joint_q, joint_dq, # 当前关节位置与速度反馈
+    velocity_command, # 上层希望的 vx、vy、yaw_rate
+    last_action,      # Actor 上一次输出
+    history           # 最近若干帧的时间信息
 )
 
-raw_action = actor(observation)
+# Actor 只输出无量纲动作；动作处理器再把它翻译成关节目标。
+raw_action = actor(observation)                 # 480 维观测 → 29 维原始动作
 q_des = q_default + 0.25 × raw_action
+
+# 电机包还包含部署配置给出的 dq_des、Kp、Kd 和 tau_ff。
 send_to_motor(q_des, dq_des=0, Kp, Kd, tau_ff=0)
 ```
 

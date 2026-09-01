@@ -3,12 +3,14 @@
 ## 14.0 第二仿真器消费的是冻结发布包
 
 ```text
+# 输入必须冻结；测试时若修改 scale、PD 或模型，就无法判断差异来自哪里。
 sim2sim_report = run_in_second_simulator(
-    policy_onnx,
-    deploy_contract,
-    second_robot_model,
-    fixed_command_and_disturbance_suite
+    policy_onnx,                       # 与训练候选完全相同的 Actor
+    deploy_contract,                   # 同一观测、动作、周期和关节映射
+    second_robot_model,                # 在另一物理实现中重建的同一机器人
+    fixed_command_and_disturbance_suite # 固定命令、扰动、边界与长时测试集
 )
+# 输出是跨引擎的指标与逐层差异报告，不会产生一个“修好后的新策略”。
 ```
 
 输出是差异报告，不是一个新策略。若测试过程中悄悄改变动作比例或网络参数，输入已经不再冻结，也就失去了定位差异的意义。
