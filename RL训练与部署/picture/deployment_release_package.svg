@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="680" viewBox="0 0 1260 680">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 20px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 16px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 14px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .source{fill:#eff6ff;stroke:#60a5fa;stroke-width:2.5}
+      .package{fill:#fff7ed;stroke:#fb923c;stroke-width:3}
+      .test{fill:#f0fdf4;stroke:#4ade80;stroke-width:2.5}
+      .gate{fill:#f5f3ff;stroke:#a78bfa;stroke-width:3}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#blue)}
+      .pass{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#green)}
+    </style>
+    <marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1260" height="680" fill="#f8fafc"/>
+  <text x="630" y="45" text-anchor="middle" class="title">可部署候选不是一个 ONNX，而是一只封好接口与证据的箱子</text>
+
+  <text x="65" y="94" class="head">导出函数的输入</text>
+  <rect x="55" y="115" width="245" height="74" rx="13" class="source"/>
+  <text x="177" y="145" text-anchor="middle" class="head">选定 checkpoint</text>
+  <text x="177" y="170" text-anchor="middle" class="small">不是自动找“最新”</text>
+  <rect x="55" y="204" width="245" height="74" rx="13" class="source"/>
+  <text x="177" y="234" text-anchor="middle" class="head">Resolved config</text>
+  <text x="177" y="259" text-anchor="middle" class="small">默认值与继承全部展开</text>
+  <rect x="55" y="293" width="245" height="74" rx="13" class="source"/>
+  <text x="177" y="323" text-anchor="middle" class="head">机器人与代码版本</text>
+  <text x="177" y="348" text-anchor="middle" class="small">关节、资源、Git commit</text>
+  <rect x="55" y="382" width="245" height="74" rx="13" class="source"/>
+  <text x="177" y="412" text-anchor="middle" class="head">固定评估结果</text>
+  <text x="177" y="437" text-anchor="middle" class="small">多种子、边界、长时测试</text>
+
+  <path d="M300 285H372" class="arrow"/>
+
+  <rect x="380" y="100" width="410" height="405" rx="22" class="package"/>
+  <text x="585" y="140" text-anchor="middle" class="head">release-candidate-vNNN/</text>
+
+  <rect x="425" y="170" width="320" height="50" rx="10" fill="#fff" stroke="#fdba74" stroke-width="2"/>
+  <text x="585" y="201" text-anchor="middle" class="body">policy.onnx　　obs → raw_action</text>
+  <rect x="425" y="230" width="320" height="74" rx="10" fill="#fff" stroke="#fdba74" stroke-width="2"/>
+  <text x="585" y="258" text-anchor="middle" class="body">deploy contract</text>
+  <text x="585" y="283" text-anchor="middle" class="small">观测、动作、关节、周期、PD、电机接口</text>
+  <rect x="425" y="314" width="320" height="50" rx="10" fill="#fff" stroke="#fdba74" stroke-width="2"/>
+  <text x="585" y="345" text-anchor="middle" class="body">training config + provenance</text>
+  <rect x="425" y="374" width="320" height="50" rx="10" fill="#fff" stroke="#fdba74" stroke-width="2"/>
+  <text x="585" y="405" text-anchor="middle" class="body">evaluation + safety case</text>
+  <rect x="425" y="434" width="320" height="50" rx="10" fill="#fff" stroke="#fdba74" stroke-width="2"/>
+  <text x="585" y="465" text-anchor="middle" class="body">golden vectors + SHA256SUMS</text>
+
+  <text x="875" y="94" class="head">发布前逐层验证</text>
+  <rect x="855" y="115" width="330" height="74" rx="13" class="test"/>
+  <text x="1020" y="145" text-anchor="middle" class="head">模型等价性</text>
+  <text x="1020" y="170" text-anchor="middle" class="small">PyTorch ↔ ONNX 的 29 维动作</text>
+  <rect x="855" y="204" width="330" height="74" rx="13" class="test"/>
+  <text x="1020" y="234" text-anchor="middle" class="head">观测等价性</text>
+  <text x="1020" y="259" text-anchor="middle" class="small">同一原始状态 → 同一 480 维</text>
+  <rect x="855" y="293" width="330" height="74" rx="13" class="test"/>
+  <text x="1020" y="323" text-anchor="middle" class="head">动作与电机包等价性</text>
+  <text x="1020" y="348" text-anchor="middle" class="small">q_des / dq_des / Kp / Kd / τ_ff</text>
+  <rect x="855" y="382" width="330" height="74" rx="13" class="test"/>
+  <text x="1020" y="412" text-anchor="middle" class="head">Sim2Sim 与安全故障</text>
+  <text x="1020" y="437" text-anchor="middle" class="small">换引擎、超时、NaN、姿态退出</text>
+  <path d="M790 285H850" class="arrow"/>
+
+  <rect x="365" y="555" width="450" height="85" rx="17" class="gate"/>
+  <text x="590" y="588" text-anchor="middle" class="head">部署闸门：匹配且全部通过，才允许进入下一级</text>
+  <text x="590" y="615" text-anchor="middle" class="body">缺字段、错哈希或测试失败 → 拒绝运行</text>
+  <path d="M1020 456V597H820" class="pass"/>
+  <text x="630" y="666" text-anchor="middle" class="small">一次 ONNX forward 成功，只证明网络能算；它没有证明输入正确、电机目标正确或真机安全</text>
+</svg>

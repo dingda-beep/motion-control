@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="690" viewBox="0 0 1280 690">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 19px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 16px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 14px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .cell{stroke:#fff;stroke-width:2}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+  </defs>
+  <rect width="1280" height="690" fill="#f8fafc"/>
+  <text x="640" y="44" text-anchor="middle" class="title">480 维不是神秘大数：6 个接口量 × 5 帧历史</text>
+
+  <text x="44" y="93" class="head">每个观测项从哪里来</text>
+  <rect x="42" y="112" width="275" height="66" rx="12" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="60" y="140" class="head">base_ang_vel · 3</text>
+  <text x="60" y="163" class="small">IMU 陀螺仪，缩放 0.2</text>
+
+  <rect x="42" y="187" width="275" height="66" rx="12" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text x="60" y="215" class="head">projected_gravity · 3</text>
+  <text x="60" y="238" class="small">IMU 姿态 → 机身中的重力方向</text>
+
+  <rect x="42" y="262" width="275" height="66" rx="12" fill="#ffedd5" stroke="#fb923c" stroke-width="2"/>
+  <text x="60" y="290" class="head">velocity_command · 3</text>
+  <text x="60" y="313" class="small">上层希望的 vx / vy / vyaw</text>
+
+  <rect x="42" y="337" width="275" height="66" rx="12" fill="#ede9fe" stroke="#a78bfa" stroke-width="2"/>
+  <text x="60" y="365" class="head">joint_pos_rel · 29</text>
+  <text x="60" y="388" class="small">SDK q − q_default</text>
+
+  <rect x="42" y="412" width="275" height="66" rx="12" fill="#fce7f3" stroke="#f472b6" stroke-width="2"/>
+  <text x="60" y="440" class="head">joint_vel_rel · 29</text>
+  <text x="60" y="463" class="small">SDK dq，缩放 0.05</text>
+
+  <rect x="42" y="487" width="275" height="66" rx="12" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="60" y="515" class="head">last_action · 29</text>
+  <text x="60" y="538" class="small">上一次原始策略动作</text>
+
+  <text x="179" y="590" text-anchor="middle" class="head">单帧：3+3+3+29+29+29 = 96</text>
+
+  <path d="M322 345H365" class="arrow"/>
+
+  <text x="385" y="93" class="head">项优先排列；每项内部从旧到新</text>
+  <text x="510" y="126" text-anchor="middle" class="small">t−4</text>
+  <text x="635" y="126" text-anchor="middle" class="small">t−3</text>
+  <text x="760" y="126" text-anchor="middle" class="small">t−2</text>
+  <text x="885" y="126" text-anchor="middle" class="small">t−1</text>
+  <text x="1010" y="126" text-anchor="middle" class="small">t</text>
+
+  <g>
+    <rect x="385" y="142" width="125" height="58" fill="#dbeafe" class="cell"/><rect x="510" y="142" width="125" height="58" fill="#dbeafe" class="cell"/><rect x="635" y="142" width="125" height="58" fill="#dbeafe" class="cell"/><rect x="760" y="142" width="125" height="58" fill="#dbeafe" class="cell"/><rect x="885" y="142" width="125" height="58" fill="#bfdbfe" class="cell"/>
+    <rect x="385" y="200" width="125" height="58" fill="#dcfce7" class="cell"/><rect x="510" y="200" width="125" height="58" fill="#dcfce7" class="cell"/><rect x="635" y="200" width="125" height="58" fill="#dcfce7" class="cell"/><rect x="760" y="200" width="125" height="58" fill="#dcfce7" class="cell"/><rect x="885" y="200" width="125" height="58" fill="#bbf7d0" class="cell"/>
+    <rect x="385" y="258" width="125" height="58" fill="#ffedd5" class="cell"/><rect x="510" y="258" width="125" height="58" fill="#ffedd5" class="cell"/><rect x="635" y="258" width="125" height="58" fill="#ffedd5" class="cell"/><rect x="760" y="258" width="125" height="58" fill="#ffedd5" class="cell"/><rect x="885" y="258" width="125" height="58" fill="#fed7aa" class="cell"/>
+    <rect x="385" y="316" width="125" height="58" fill="#ede9fe" class="cell"/><rect x="510" y="316" width="125" height="58" fill="#ede9fe" class="cell"/><rect x="635" y="316" width="125" height="58" fill="#ede9fe" class="cell"/><rect x="760" y="316" width="125" height="58" fill="#ede9fe" class="cell"/><rect x="885" y="316" width="125" height="58" fill="#ddd6fe" class="cell"/>
+    <rect x="385" y="374" width="125" height="58" fill="#fce7f3" class="cell"/><rect x="510" y="374" width="125" height="58" fill="#fce7f3" class="cell"/><rect x="635" y="374" width="125" height="58" fill="#fce7f3" class="cell"/><rect x="760" y="374" width="125" height="58" fill="#fce7f3" class="cell"/><rect x="885" y="374" width="125" height="58" fill="#fbcfe8" class="cell"/>
+    <rect x="385" y="432" width="125" height="58" fill="#fef3c7" class="cell"/><rect x="510" y="432" width="125" height="58" fill="#fef3c7" class="cell"/><rect x="635" y="432" width="125" height="58" fill="#fef3c7" class="cell"/><rect x="760" y="432" width="125" height="58" fill="#fef3c7" class="cell"/><rect x="885" y="432" width="125" height="58" fill="#fde68a" class="cell"/>
+  </g>
+  <text x="447" y="176" text-anchor="middle" class="body">角速度</text><text x="447" y="234" text-anchor="middle" class="body">投影重力</text><text x="447" y="292" text-anchor="middle" class="body">命令</text><text x="447" y="350" text-anchor="middle" class="body">关节角</text><text x="447" y="408" text-anchor="middle" class="body">关节速度</text><text x="447" y="466" text-anchor="middle" class="body">上一动作</text>
+
+  <rect x="1060" y="235" width="175" height="165" rx="18" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="3"/>
+  <text x="1147" y="280" text-anchor="middle" class="head">Actor 输入</text>
+  <text x="1147" y="327" text-anchor="middle" style="font:700 38px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif;fill:#6d28d9">480</text>
+  <text x="1147" y="362" text-anchor="middle" class="body">96 × 5</text>
+  <path d="M1015 316H1055" class="arrow"/>
+
+  <rect x="382" y="535" width="625" height="95" rx="14" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="695" y="570" text-anchor="middle" class="head">维度正确还不够，排列也必须正确</text>
+  <text x="695" y="600" text-anchor="middle" class="body">当前实现不是“完整第 1 帧 → 完整第 2 帧”；重置时用第一帧填满历史，而不是补零</text>
+  <text x="640" y="667" text-anchor="middle" class="small">同样 480 个数，只要顺序、缩放或历史初始化不同，Actor 看见的就是另一个世界</text>
+</svg>

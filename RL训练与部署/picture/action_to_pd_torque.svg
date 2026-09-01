@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="700" viewBox="0 0 1320 700">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 20px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 16px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 14px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .box{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .policy{fill:#f5f3ff;stroke:#a78bfa;stroke-width:3}
+      .motor{fill:#fff7ed;stroke:#fb923c;stroke-width:3}
+      .feedback{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#blue)}
+      .feedback-arrow{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#green)}
+    </style>
+    <marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+  </defs>
+  <rect width="1320" height="700" fill="#f8fafc"/>
+  <text x="660" y="45" text-anchor="middle" class="title">Actor 不直接输出力矩：29 个数怎样走到电机 PD</text>
+
+  <rect x="45" y="115" width="170" height="100" rx="16" class="policy"/>
+  <text x="130" y="151" text-anchor="middle" class="head">Actor</text>
+  <text x="130" y="181" text-anchor="middle" class="body">raw_action · 29</text>
+  <text x="130" y="202" text-anchor="middle" class="small">无单位原始动作</text>
+
+  <rect x="265" y="115" width="210" height="100" rx="16" class="box"/>
+  <text x="370" y="151" text-anchor="middle" class="head">比例 + 默认姿态</text>
+  <text x="370" y="181" text-anchor="middle" class="body">q_default + 0.25a</text>
+  <text x="370" y="202" text-anchor="middle" class="small">输出单位 rad</text>
+
+  <rect x="525" y="115" width="205" height="100" rx="16" class="box"/>
+  <text x="627" y="151" text-anchor="middle" class="head">关节顺序映射</text>
+  <text x="627" y="181" text-anchor="middle" class="body">policy → SDK</text>
+  <text x="627" y="202" text-anchor="middle" class="small">得到 q_des · 29</text>
+
+  <path d="M215 165H260M475 165H520" class="arrow"/>
+
+  <rect x="785" y="85" width="485" height="285" rx="20" class="motor"/>
+  <text x="1027" y="125" text-anchor="middle" class="head">低层位置接口 / 电机驱动</text>
+  <text x="1027" y="163" text-anchor="middle" style="font:700 21px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif;fill:#9a3412">τ_cmd = τ_ff + Kp(q_des − q)</text>
+  <text x="1027" y="190" text-anchor="middle" style="font:700 21px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif;fill:#9a3412">+ Kd(dq_des − dq)</text>
+
+  <rect x="815" y="210" width="200" height="70" rx="12" class="box"/>
+  <text x="915" y="239" text-anchor="middle" class="head">策略给目标</text>
+  <text x="915" y="263" text-anchor="middle" class="body">q_des；dq_des = 0</text>
+
+  <rect x="1040" y="210" width="200" height="70" rx="12" class="box"/>
+  <text x="1140" y="239" text-anchor="middle" class="head">部署配置</text>
+  <text x="1140" y="263" text-anchor="middle" class="body">Kp、Kd；τ_ff = 0</text>
+
+  <rect x="927" y="302" width="200" height="48" rx="12" fill="#fff" stroke="#fdba74" stroke-width="2"/>
+  <text x="1027" y="332" text-anchor="middle" class="body">输出 τ_cmd，并受硬件限制</text>
+
+  <path d="M730 165H780" class="arrow"/>
+
+  <rect x="845" y="440" width="365" height="105" rx="16" class="feedback"/>
+  <text x="1027" y="475" text-anchor="middle" class="head">SDK 电机状态反馈</text>
+  <text x="1027" y="506" text-anchor="middle" class="body">q：当前关节角　　dq：当前关节速度</text>
+  <text x="1027" y="529" text-anchor="middle" class="small">来自编码器/驱动处理，不是 Actor 猜出来的</text>
+  <path d="M1027 440V375" class="feedback-arrow"/>
+
+  <rect x="80" y="445" width="620" height="150" rx="18" fill="#ecfeff" stroke="#67e8f9" stroke-width="2.5"/>
+  <text x="390" y="482" text-anchor="middle" class="head">“前馈被策略内化”怎样说才准确</text>
+  <text x="390" y="519" text-anchor="middle" class="body">策略把预见性的动态效果编码进 q_des 的时间序列</text>
+  <text x="390" y="550" text-anchor="middle" class="body">但接口里的显式 τ_ff 仍然等于 0</text>
+  <text x="390" y="577" text-anchor="middle" class="small">若策略直接输出力矩或前馈项，那就是另一份动作契约</text>
+
+  <path d="M1210 492H1260V625H1027V550" class="feedback-arrow"/>
+  <text x="1145" y="650" text-anchor="middle" class="small">力矩改变机器人 → 下一周期读到新的 q、dq</text>
+</svg>

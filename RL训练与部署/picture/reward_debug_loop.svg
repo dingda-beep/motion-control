@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="700" viewBox="0 0 1240 700">
+  <defs>
+    <style>
+      .title{font:700 30px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 20px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 16px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 14px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .box{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .goal{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .evidence{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .change{fill:#f5f3ff;stroke:#a78bfa;stroke-width:3}
+      .warn{fill:#fff7ed;stroke:#fb923c;stroke-width:2.5}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#blue)}
+      .loop{stroke:#7c3aed;stroke-width:4;fill:none;marker-end:url(#purple)}
+    </style>
+    <marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="purple" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#7c3aed"/></marker>
+  </defs>
+  <rect width="1240" height="700" fill="#f8fafc"/>
+  <text x="620" y="45" text-anchor="middle" class="title">奖励不是一次写完的配方，而是一条有证据的调试循环</text>
+
+  <rect x="60" y="105" width="220" height="105" rx="16" class="goal"/>
+  <text x="170" y="140" text-anchor="middle" class="head">1. 真机验收目标</text>
+  <text x="170" y="170" text-anchor="middle" class="body">跟命令、不摔、不过限</text>
+  <text x="170" y="194" text-anchor="middle" class="small">先定义什么叫成功</text>
+
+  <rect x="360" y="105" width="220" height="105" rx="16" class="box"/>
+  <text x="470" y="140" text-anchor="middle" class="head">2. 最小奖励</text>
+  <text x="470" y="170" text-anchor="middle" class="body">任务 + 姿态 + 接触</text>
+  <text x="470" y="194" text-anchor="middle" class="small">每项都对应具体失败</text>
+
+  <rect x="660" y="105" width="220" height="105" rx="16" class="box"/>
+  <text x="770" y="140" text-anchor="middle" class="head">3. 训练与回放</text>
+  <text x="770" y="170" text-anchor="middle" class="body">多种子、固定命令</text>
+  <text x="770" y="194" text-anchor="middle" class="small">不只挑最好看的视频</text>
+
+  <rect x="960" y="105" width="220" height="105" rx="16" class="evidence"/>
+  <text x="1070" y="140" text-anchor="middle" class="head">4. 指标与证据</text>
+  <text x="1070" y="170" text-anchor="middle" class="body">分项贡献、极值、失败录像</text>
+  <text x="1070" y="194" text-anchor="middle" class="small">总奖励只是其中一个数</text>
+
+  <path d="M280 157H355M580 157H655M880 157H955" class="arrow"/>
+
+  <rect x="420" y="305" width="400" height="125" rx="18" class="change"/>
+  <text x="620" y="343" text-anchor="middle" class="head">5. 只提出一个可证伪假设</text>
+  <text x="620" y="375" text-anchor="middle" class="body">只改一个主要因素，再与基线对照</text>
+  <text x="620" y="403" text-anchor="middle" class="small">改善目标失败，也要检查有没有伤害旧能力</text>
+  <path d="M1070 210V267H820V300" class="loop"/>
+  <path d="M420 368H315V265H170V215" class="loop"/>
+
+  <text x="620" y="485" text-anchor="middle" class="head">看见什么失败，才知道该查什么接口</text>
+
+  <rect x="55" y="515" width="250" height="105" rx="14" class="warn"/>
+  <text x="180" y="548" text-anchor="middle" class="head">不肯走</text>
+  <text x="180" y="577" text-anchor="middle" class="body">任务收益是否被代价淹没？</text>
+  <text x="180" y="600" text-anchor="middle" class="small">不要先加大所有权重</text>
+
+  <rect x="350" y="515" width="250" height="105" rx="14" class="warn"/>
+  <text x="475" y="548" text-anchor="middle" class="head">速度对但脚在滑</text>
+  <text x="475" y="577" text-anchor="middle" class="body">足滑代价是否足够可见？</text>
+  <text x="475" y="600" text-anchor="middle" class="small">先测足速与接触，再修改</text>
+
+  <rect x="645" y="515" width="250" height="105" rx="14" class="warn"/>
+  <text x="770" y="548" text-anchor="middle" class="head">用膝盖撑地</text>
+  <text x="770" y="577" text-anchor="middle" class="body">禁止接触是否进入计分/终止？</text>
+  <text x="770" y="600" text-anchor="middle" class="small">速度奖励高也不能放行</text>
+
+  <rect x="940" y="515" width="250" height="105" rx="14" class="warn"/>
+  <text x="1065" y="548" text-anchor="middle" class="head">关节高频抖动</text>
+  <text x="1065" y="577" text-anchor="middle" class="body">动作差分与加速度多大？</text>
+  <text x="1065" y="600" text-anchor="middle" class="small">视频之外还要看频率与峰值</text>
+
+  <text x="620" y="670" text-anchor="middle" class="body">奖励提供训练梯度；独立指标与硬约束决定能不能发布</text>
+</svg>
