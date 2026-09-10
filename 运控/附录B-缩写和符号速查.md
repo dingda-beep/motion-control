@@ -59,6 +59,7 @@
 | BC | Behavior Cloning | 行为克隆 |
 | CNN | Convolutional Neural Network | 卷积神经网络 |
 | DAgger | Dataset Aggregation | 数据集聚合 |
+| DeepMimic | 方法名，不是缩写 | 逐时刻跟踪对齐参考运动，并用强化学习得到物理可执行策略；详见[第 17 章](17-动作重映射与模仿学习.md) |
 | DR | Domain Randomization | 域随机化 |
 | FB | Forward-Backward Representation | 前向-后向表征 |
 | [FBCPR](https://arxiv.org/abs/2504.11054) | Forward-Backward Representations with Conditional-Policy Regularization | 带条件策略正则的前向—后向表征 |

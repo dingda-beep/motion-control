@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920">
+  <defs>
+    <style>
+      .title{font:700 31px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 23px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .sub{font:700 18px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .white{fill:#fff;stroke:#cbd5e1;stroke-width:2}
+      .deep{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .amp{fill:#faf5ff;stroke:#c084fc;stroke-width:3}
+      .deploy{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .common{fill:#fff7ed;stroke:#fb923c;stroke-width:3}
+      .arrowB{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#ab)}
+      .arrowP{stroke:#9333ea;stroke-width:4;fill:none;marker-end:url(#ap)}
+      .arrowG{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#ag)}
+      .dash{stroke:#94a3b8;stroke-width:3;stroke-dasharray:9 7;fill:none}
+    </style>
+    <marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="ap" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#9333ea"/></marker>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+  </defs>
+
+  <rect width="1400" height="920" fill="#f8fafc"/>
+  <text x="700" y="46" text-anchor="middle" class="title">同样可以用 PPO，DeepMimic 与 AMP 改变的是“成绩怎样产生”</text>
+
+  <rect x="330" y="72" width="740" height="95" rx="16" class="common"/>
+  <text x="700" y="108" text-anchor="middle" class="head">共同底座</text>
+  <text x="700" y="139" text-anchor="middle" class="body">清洗/必要时重映射的动作数据 + 物理仿真机器人 + Actor/Critic + PPO 更新</text>
+
+  <path d="M700 167V195H345V220" class="arrowB"/>
+  <path d="M700 167V195H1055V220" class="arrowP"/>
+
+  <rect x="45" y="220" width="610" height="475" rx="20" class="deep"/>
+  <text x="350" y="258" text-anchor="middle" class="head">DeepMimic 类：逐帧对答案</text>
+  <text x="350" y="287" text-anchor="middle" class="small">问题：此时此刻是否接近指定参考帧？</text>
+
+  <rect x="85" y="320" width="220" height="76" rx="13" class="white"/>
+  <text x="195" y="349" text-anchor="middle" class="sub">相位 / 参考时钟</text>
+  <text x="195" y="375" text-anchor="middle" class="small">phase = 0.60</text>
+  <rect x="395" y="320" width="220" height="76" rx="13" class="white"/>
+  <text x="505" y="349" text-anchor="middle" class="sub">动作文件采样</text>
+  <text x="505" y="375" text-anchor="middle" class="small">取出当前参考状态</text>
+  <path d="M305 358H389" class="arrowB"/>
+
+  <rect x="85" y="435" width="220" height="88" rx="13" class="white"/>
+  <text x="195" y="467" text-anchor="middle" class="sub">仿真实际状态</text>
+  <text x="195" y="494" text-anchor="middle" class="small">姿态、速度、手脚、骨盆</text>
+  <rect x="395" y="435" width="220" height="88" rx="13" class="white"/>
+  <text x="505" y="467" text-anchor="middle" class="sub">手写跟踪比较</text>
+  <text x="505" y="494" text-anchor="middle" class="small">实际状态 − 对齐参考状态</text>
+  <path d="M305 479H389" class="arrowB"/>
+  <path d="M505 396V429" class="arrowB"/>
+
+  <rect x="240" y="560" width="220" height="82" rx="13" class="white"/>
+  <text x="350" y="591" text-anchor="middle" class="sub">模仿奖励 + 任务奖励</text>
+  <text x="350" y="618" text-anchor="middle" class="small">送给 PPO 更新 Actor</text>
+  <path d="M505 523C505 545 456 552 456 570" class="arrowB"/>
+
+  <rect x="745" y="220" width="610" height="475" rx="20" class="amp"/>
+  <text x="1050" y="258" text-anchor="middle" class="head">AMP：分布层面判真假</text>
+  <text x="1050" y="287" text-anchor="middle" class="small">问题：这小段连续运动是否像动作数据？</text>
+
+  <rect x="785" y="320" width="220" height="88" rx="13" class="white"/>
+  <text x="895" y="352" text-anchor="middle" class="sub">示范状态转移</text>
+  <text x="895" y="379" text-anchor="middle" class="small">动作库里的相邻状态</text>
+  <rect x="1095" y="320" width="220" height="88" rx="13" class="white"/>
+  <text x="1205" y="352" text-anchor="middle" class="sub">策略状态转移</text>
+  <text x="1205" y="379" text-anchor="middle" class="small">仿真中 Actor 刚产生的运动</text>
+
+  <rect x="940" y="455" width="220" height="88" rx="13" class="white"/>
+  <text x="1050" y="487" text-anchor="middle" class="sub">判别器 D</text>
+  <text x="1050" y="514" text-anchor="middle" class="small">学习区分示范与策略</text>
+  <path d="M895 408C895 435 970 438 970 452" class="arrowP"/>
+  <path d="M1205 408C1205 435 1130 438 1130 452" class="arrowP"/>
+
+  <rect x="940" y="580" width="220" height="82" rx="13" class="white"/>
+  <text x="1050" y="611" text-anchor="middle" class="sub">风格奖励 + 任务奖励</text>
+  <text x="1050" y="638" text-anchor="middle" class="small">送给 PPO 更新 Actor</text>
+  <path d="M1050 543V574" class="arrowP"/>
+
+  <path d="M350 695V732" class="dash"/>
+  <path d="M1050 695V732" class="dash"/>
+
+  <rect x="45" y="735" width="610" height="130" rx="18" class="deploy"/>
+  <text x="350" y="772" text-anchor="middle" class="head">DeepMimic 类部署</text>
+  <text x="350" y="807" text-anchor="middle" class="body">Actor + 身体观测 + 相位/参考条件（按训练接口保留）</text>
+  <text x="350" y="837" text-anchor="middle" class="small">奖励和 Critic 删除；依赖相位的 Actor 不能擅自删掉相位</text>
+
+  <rect x="745" y="735" width="610" height="130" rx="18" class="deploy"/>
+  <text x="1050" y="772" text-anchor="middle" class="head">典型 AMP 部署</text>
+  <text x="1050" y="807" text-anchor="middle" class="body">Actor + 身体观测 + 任务命令</text>
+  <text x="1050" y="837" text-anchor="middle" class="small">判别器、示范库、回放缓存和 Critic 都只服务训练</text>
+
+  <text x="700" y="902" text-anchor="middle" class="body">根本差别不是动作文件数量，而是“对齐参考状态”还是“匹配示范运动分布”</text>
+</svg>
