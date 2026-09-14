@@ -35,6 +35,7 @@
 | USD | Universal Scene Description，Isaac Sim 常用的场景/资产描述体系。 |
 | PD | Proportional–Derivative，比例—微分控制。根据位置误差和速度产生恢复力矩。 |
 | decimation | 降采样倍数/动作保持子步数。本案例每个策略动作跨 4 个 5 ms 物理步。 |
+| curriculum learning | 课程学习。训练期根据当前能力调整下一批命令、地形、初始状态或随机化难度；它改变经验分布，不是部署控制器。 |
 | domain randomization | 域随机化。训练时随机改变质量、摩擦、延迟等，让策略适应一组可能世界。 |
 | privileged information | 特权信息。训练时可用、部署时不可直接得到的信息，例如仿真真值速度。 |
 | Sim2Sim | Simulation to Simulation。同一冻结策略换到另一个仿真实现复核。 |

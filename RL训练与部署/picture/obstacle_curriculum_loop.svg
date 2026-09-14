@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860">
+  <defs>
+    <style>
+      .title{font:700 31px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .head{font:700 21px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#172033}
+      .body{font:400 17px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#334155}
+      .small{font:400 15px "Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#64748b}
+      .box{fill:#fff;stroke:#cbd5e1;stroke-width:2.5}
+      .course{fill:#fff7ed;stroke:#fb923c;stroke-width:3}
+      .task{fill:#eff6ff;stroke:#60a5fa;stroke-width:3}
+      .train{fill:#faf5ff;stroke:#c084fc;stroke-width:3}
+      .metric{fill:#f0fdf4;stroke:#4ade80;stroke-width:3}
+      .deploy{fill:#f8fafc;stroke:#94a3b8;stroke-width:2.5;stroke-dasharray:9 7}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#blue)}
+      .return{stroke:#16a34a;stroke-width:4;fill:none;marker-end:url(#green)}
+      .remove{stroke:#94a3b8;stroke-width:3;stroke-dasharray:9 7;fill:none;marker-end:url(#gray)}
+    </style>
+    <marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#2563eb"/></marker>
+    <marker id="green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#16a34a"/></marker>
+    <marker id="gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#94a3b8"/></marker>
+  </defs>
+
+  <rect width="1400" height="860" fill="#f8fafc"/>
+  <text x="700" y="48" text-anchor="middle" class="title">越障课程：根据能力改变下一批题目，而不是按时间硬升级</text>
+
+  <rect x="70" y="115" width="270" height="145" rx="18" class="course"/>
+  <text x="205" y="153" text-anchor="middle" class="head">1. 课程管理器</text>
+  <text x="205" y="187" text-anchor="middle" class="body">读取当前等级与历史表现</text>
+  <text x="205" y="217" text-anchor="middle" class="small">决定升、降、保持和复习比例</text>
+  <text x="205" y="241" text-anchor="middle" class="small">只在训练中运行</text>
+
+  <rect x="400" y="115" width="270" height="145" rx="18" class="task"/>
+  <text x="535" y="153" text-anchor="middle" class="head">2. 生成下一批题目</text>
+  <text x="535" y="187" text-anchor="middle" class="body">高度、宽度、位置、速度</text>
+  <text x="535" y="217" text-anchor="middle" class="small">摩擦、噪声和初始状态</text>
+  <text x="535" y="241" text-anchor="middle" class="small">同一回合内题目保持不变</text>
+
+  <rect x="730" y="115" width="270" height="145" rx="18" class="train"/>
+  <text x="865" y="153" text-anchor="middle" class="head">3. 同一个 Actor 练习</text>
+  <text x="865" y="187" text-anchor="middle" class="body">几千个环境可以等级不同</text>
+  <text x="865" y="217" text-anchor="middle" class="small">观测 → Actor → PD → 仿真</text>
+  <text x="865" y="241" text-anchor="middle" class="small">PPO 继续更新同一组参数</text>
+
+  <rect x="1060" y="115" width="270" height="145" rx="18" class="metric"/>
+  <text x="1195" y="153" text-anchor="middle" class="head">4. 记录完整证据</text>
+  <text x="1195" y="187" text-anchor="middle" class="body">是否通过、摔倒、碰撞</text>
+  <text x="1195" y="217" text-anchor="middle" class="small">前后脚越过、落地稳定</text>
+  <text x="1195" y="241" text-anchor="middle" class="small">不要只看总奖励</text>
+
+  <path d="M340 187H394" class="arrow"/>
+  <path d="M670 187H724" class="arrow"/>
+  <path d="M1000 187H1054" class="arrow"/>
+  <path d="M1195 260V315H205V266" class="return"/>
+  <text x="700" y="306" text-anchor="middle" class="small">回合结束时把指标送回课程管理器，下一回合再换题</text>
+
+  <text x="700" y="382" text-anchor="middle" class="head">并行题库不是一条只上不下的楼梯</text>
+
+  <rect x="85" y="420" width="270" height="105" rx="15" class="box"/>
+  <text x="220" y="455" text-anchor="middle" class="head">复习区</text>
+  <text x="220" y="487" text-anchor="middle" class="body">平地和已掌握低障碍</text>
+  <text x="220" y="511" text-anchor="middle" class="small">防止旧能力遗忘</text>
+
+  <rect x="395" y="420" width="270" height="105" rx="15" class="box"/>
+  <text x="530" y="455" text-anchor="middle" class="head">主训练区</text>
+  <text x="530" y="487" text-anchor="middle" class="body">当前能力边界附近</text>
+  <text x="530" y="511" text-anchor="middle" class="small">有失败，也有机会成功</text>
+
+  <rect x="705" y="420" width="270" height="105" rx="15" class="box"/>
+  <text x="840" y="455" text-anchor="middle" class="head">探索区</text>
+  <text x="840" y="487" text-anchor="middle" class="body">少量略高难度</text>
+  <text x="840" y="511" text-anchor="middle" class="small">探测能力能否继续扩张</text>
+
+  <rect x="1015" y="420" width="300" height="105" rx="15" class="box"/>
+  <text x="1165" y="455" text-anchor="middle" class="head">固定诊断区</text>
+  <text x="1165" y="487" text-anchor="middle" class="body">不随课程改变的标准题</text>
+  <text x="1165" y="511" text-anchor="middle" class="small">区分能力提升与题目变简单</text>
+
+  <path d="M700 555V609" class="remove"/>
+  <text x="720" y="585" class="small">训练完成后删除课程管理器</text>
+
+  <rect x="155" y="615" width="1090" height="165" rx="20" class="deploy"/>
+  <text x="700" y="655" text-anchor="middle" class="head">部署阶段留下什么</text>
+  <text x="700" y="692" text-anchor="middle" class="body">真实传感器/地形观测 + 任务命令 → 冻结 Actor → 关节目标 → PD 与真实机器人</text>
+  <text x="700" y="725" text-anchor="middle" class="small">不再输入 terrain_level；训练管理器知道的障碍真值不能偷偷进入真机 Actor</text>
+  <text x="700" y="752" text-anchor="middle" class="small">课程获得能力，独立评估和真机分级测试才决定批准范围</text>
+
+  <text x="700" y="830" text-anchor="middle" class="body">课程的本质：把训练经验维持在“有点难，但仍可能学会”的区域</text>
+</svg>
